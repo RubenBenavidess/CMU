@@ -260,5 +260,14 @@ footer{
     margin-top: 10px; 
 }
 
+#footer-contact-spans div{
+    display: flex;
+    flex-direction: row;
+}
+
+.material-icons{
+    margin-right: 5px;
+}
+
 /* Footer End */
 

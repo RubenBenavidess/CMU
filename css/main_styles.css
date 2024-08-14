@@ -1,0 +1,264 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: rgb(27, 38, 49);
+    margin: 0 30px;
+    color: white;
+}
+
+/*Header Start*/
+
+nav{
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+    padding: 20px;
+}
+
+#header-nav{   
+    border-bottom: 3px solid rgb(214, 219, 223);
+}
+
+ul{
+    list-style: none;
+}
+
+
+#nav-left-ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    height: 100%;
+    align-items: center;
+}
+
+#nav-right-ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    height: 100%;
+    align-items: center;
+}
+
+.nav-left-item, .nav-right-item{
+    margin: 0 10px;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-weight: 900;
+}
+
+/* Snippet modified from: eluda, recovered from: https://app.ui-snippets.com/buttons/overfold */
+.nav-button,
+.nav-button *,
+.nav-button :after,
+.nav-button :before,
+.nav-button:after,
+.nav-button:before {
+border: 0 solid rgb(27, 38, 49);
+box-sizing: border-box;
+}
+.nav-button {   
+background-color: 
+rgb(27, 38, 49);
+background-image: none;
+color: #fff;
+cursor: pointer;
+font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+font-size: 100%;
+font-weight: 900;
+line-height: 1.5;
+margin: 0;
+padding: 0;
+}
+.nav-button:disabled {
+cursor: default;
+}
+.nav-button:-moz-focusring {
+outline: auto;
+}
+.nav-button svg {
+display: block;
+vertical-align: middle;
+}
+.nav-button [hidden] {
+display: none;
+}
+.nav-button {
+border-width: 1px;
+padding: 0.5rem 1rem;
+position: relative;
+text-transform: uppercase;
+}
+.nav-button:before {
+--progress: 100%;
+background: 
+#fff;
+-webkit-clip-path: polygon(
+    100% 0,
+    var(--progress) var(--progress),
+    0 100%,
+    100% 100%
+);
+clip-path: polygon(
+    100% 0,
+    var(--progress) var(--progress),
+    0 100%,
+    100% 100%
+);
+content: "";
+inset: 0;
+position: absolute;
+transition: -webkit-clip-path 0.2s ease;
+transition: clip-path 0.2s ease;
+transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
+}
+.nav-button:hover:before {
+--progress: 0%;
+}
+.nav-button .text-container {
+display: block;
+overflow: hidden;
+position: relative;
+color: white;
+}
+.nav-button .text {
+display: block;
+font-weight: 900;
+position: relative;
+color: white;
+}
+.nav-button:hover .text {
+-webkit-animation: move-up-alternate 0.3s ease forwards;
+animation: move-up-alternate 0.3s ease forwards;
+color: #000;
+
+}
+@-webkit-keyframes move-up-alternate {
+0% {
+    transform: translateY(0);
+}
+50% {
+    transform: translateY(80%);
+}
+51% {
+    transform: translateY(-80%);
+}
+to {
+    transform: translateY(0);
+}
+}
+@keyframes move-up-alternate {
+0% {
+    transform: translateY(0);
+}
+50% {
+    transform: translateY(80%);
+}
+51% {
+    transform: translateY(-80%);
+}
+to {
+    transform: translateY(0);
+}
+}
+
+/* End Snippet */
+
+/*Header End*/
+
+
+
+/* Main Section Start */
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+.main-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+.main-section .col-5, .main-section .col-7{
+    padding: 20px;
+    background-color: rgb(33, 47, 60);
+}
+
+.main-section .col-5{
+    margin-right: 10px;
+}
+
+.main-section div span{
+    color: rgb(214, 219, 223);
+    font-weight: 1000;
+}
+
+#title-container{
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Main Section End */
+
+
+
+
+/* Footer Start */
+
+footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+#footer-nav{
+    background-color: rgb(214, 219, 223);
+    color: #000;
+    margin: 0;
+}
+
+#footer-contact-title{
+    display: flex;
+    justify-content: center;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-weight: 900;
+    padding-bottom: 10px;
+}
+
+#footer-contact-spans{
+    display: flex;
+    flex-direction: column;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-weight: 400;
+    margin-top: 10px; 
+}
+
+/* Footer End */
+

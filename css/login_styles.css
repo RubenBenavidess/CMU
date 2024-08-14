@@ -1,7 +1,46 @@
 @charset "utf-8";
 /* CSS Document */
 
-/*BOTON LOGIN Y REGISTRO snippet from eluda recovered from: https://app.ui-snippets.com/buttons/3d-button-2 */
+/* CONTAINERS */
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0px;
+}
+
+.formContainer{
+	margin: auto;
+	width: 80%;
+}
+/* CONTAINERS END */
+
+/* INPUTS */
+input[type="text"],
+input[type="password"]{
+	width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+	margin-top: 6px;
+	margin-bottom: 18px;
+}
+/* INPUTS END */
+
+/* ERROR MSG */
+.msgError{
+	display: none;
+	background-color: transparent;
+	color: #FF9A62;
+}
+/* ERROR MSG END*/
+
+/* BOTON LOGIN */
+button[type="submit"]{
+	width: 100%;
+}
+
+/*snippet from eluda recovered from: https://app.ui-snippets.com/buttons/3d-button-2 */
 .btn-54,
 .btn-54 *,
 .btn-54 :after,

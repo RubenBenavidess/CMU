@@ -34,14 +34,18 @@ footer{
     margin-top: 10px; 
 }
 
-#footer-contact-spans div{
+.contact-container{
     display: flex;
-    flex-direction: row;
 }
 
 .material-icons{
     margin-right: 5px;
 }
 
-/* Footer End */
+#footer-contact-spans-inner{
+    display: flex;
+    justify-content: space-between;
+}
+
+
 

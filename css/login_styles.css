@@ -1,12 +1,77 @@
 @charset "utf-8";
 /* CSS Document */
 
-/*BOTON LOGIN Y REGISTRO snippet from eluda recovered from: https://app.ui-snippets.com/buttons/3d-button-2 */
+/* TEXTS */
+#infoTitle{
+	text-align: center;
+}
+/* TEXTS END */
+
+#infoImg{
+	width: 100%;
+	margin: auto;
+}
+
+/* CONTAINERS */
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0px;
+}
+
+.formContainer{
+	margin: auto;
+	width: 80%;
+	padding: 8px;
+}
+
+.infoContainer{
+	text-align: center;
+	padding: 8px;
+}
+
+.imgContainer{
+	width: 75%;
+	margin: auto;
+	margin-top: 8px;
+	margin-bottom: 6px;
+	padding: 8px;
+}
+/* CONTAINERS END */
+
+/* INPUTS */
+input[type="text"],
+input[type="password"]{
+	width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+	margin-top: 6px;
+	margin-bottom: 18px;
+}
+/* INPUTS END */
+
+/* ERROR MSG */
+.msgError{
+	display: none;
+	background-color: transparent;
+	color: #FF9A62;
+}
+/* ERROR MSG END*/
+
+/* BOTON LOGIN */
+button[type="submit"]{
+	margin-top: 24px;
+	width: 100%;
+}
+
+/*snippet from eluda recovered from: https://app.ui-snippets.com/buttons/3d-button-2 */
 .btn-54,
 .btn-54 *,
 .btn-54 :after,
 .btn-54 :before,
-.btn-54:aFF9340
+.btn-54:after,
 .btn-54:before {
   border: 0 solid;
   box-sizing: border-box;
@@ -16,10 +81,10 @@
 transparent;
   -webkit-appearance: button;
   background-color: 
-#000;
+#D6DBDF;
   background-image: none;
   color: 
-#fff;
+#1B2631;
   cursor: pointer;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,

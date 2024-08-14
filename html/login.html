@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CMU - Inicio de sesión</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="icon" type="image/x-icon" href="../img/ICONO.ico">
 <link href="../css/general_styles.css" rel="stylesheet" type="text/css">	
 <link href="../css/navbar_styles.css" rel="stylesheet" type="text/css">
 <link href="../css/footer_styles.css" rel="stylesheet" type="text/css">
 <link href="../css/login_styles.css" rel="stylesheet" type="text/css">	
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 	<!-- Header: It will have the logo, login, register -->
@@ -19,8 +20,8 @@
             <!-- This is the left side of the nav -->
             <div class="col-5">
                 <ul id="nav-left-ul">
-                    <li class="nav-left-item"><img src="#" alt="Logo"></li>
-                    <li class="nav-left-item">CMU</li>
+                    <li class="nav-left-item"><a href="main.html"><img id="logo" src="../img/LOGO.png" alt="Logo"></a></li>
+                    <li class="nav-left-item"><a href="main.html">CMU</a></li>
                 </ul>
             </div>
 
@@ -32,9 +33,9 @@
                             <span class="text">Registrar</span>
                         </span></button>
 					</li>
-                    <li class="nav-right-item"><button class="nav-button">
+                    <li class="nav-right-item"><button href="login.html" class="nav-button">
                         <span class="text-container">
-							<span class="text"><a href="login.html">Iniciar Sesión</a></span>
+							<span class="text">Iniciar Sesión</span>
                         </span></button>
 					</li>
                 </ul>
@@ -43,11 +44,9 @@
         </nav>
     </header>
 	
+	<!-- Login section -->
 	<div class="container row">
-		<div class="col-5">
-			<p> La comunidad universitaria que te ayudará a ser mejor en tus estudios</p>
-		</div>
-		<div class="col-7">
+		<div class="col-4">
 			<div class="formContainer">
 			<form class="formLogin" id="formLogin" method="POST" action="../scripts/php/login.php">
 				<div class="formInputs">
@@ -64,11 +63,27 @@
 					<input id="password" name="password" type="password" required>
 					<div class="msgError" id="msgInvPwd">
 						<p>Contraseña incorrecta</p>
-					</div>	
-					<button id="btnLogin" type="submit" class="btn-54"> LOG IN </button>
+					</div>
+					<button id="btnLogin" type="submit" class="btn-54">
+					  <span class="shadow"></span>
+					  <span class="depth"></span>
+					  <span class="content"> LOG IN</span>
+					</button>
 				</div>
 			</form>
 			</div>
+		</div>
+		<div class="infoContainer col-8">
+			<h2 id="infoTitle"> La comunidad universitaria que te ayudará a ser mejor en tus estudios </h2>
+			<div class="imgContainer">
+			<picture id="infoPic">
+				 <source srcset="../img/img_community_small.jpg" media="(max-width: 400px)">
+				 <source srcset="../img/img_community_medium.jpg" media="(max-width: 768px)">
+				 <source srcset="../img/img_community_large.jpg">
+				 <img id="infoImg" src="../img/img_community_large.jpg" alt="Community img">
+			</picture>
+				</div>
+			<p> Al iniciar sesión obtenedrás los siguientes <a href="#"> beneficios </a> y aceptas los <a href="#"> Términos y condiciones. </a></p>
 		</div>
 	</div>
 	

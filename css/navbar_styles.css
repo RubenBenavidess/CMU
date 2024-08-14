@@ -44,6 +44,11 @@ ul{
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     font-weight: 900;
+	max-width: 30%;
+}
+
+#logo{
+	width: 50%;
 }
 
 /* Snippet modified from: eluda, recovered from: https://app.ui-snippets.com/buttons/overfold */

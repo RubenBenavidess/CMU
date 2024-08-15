@@ -52,6 +52,10 @@ document.getElementById('password').addEventListener('input', function(){
 });
 
 document.getElementById('password').addEventListener('blur', function(){
+	if (this.value.trim() === "") {
+        return;
+    }
+	
 	const pattern = new RegExp(this.getAttribute('pattern'));
     
     if (!pattern.test(this.value)) {
@@ -69,6 +73,10 @@ document.getElementById('bornDate').addEventListener('input', function(){
 });
 
 document.getElementById('bornDate').addEventListener('blur', function(){
+	if (this.value.trim() === "") {
+        return;
+    }
+	
     if (!validateBornDate(this.value)) {
 		setBorderColor("bornDate", "#FF6254");
         document.getElementById('msgInvBornDate').style.display = 'block';

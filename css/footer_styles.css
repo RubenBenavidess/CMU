@@ -34,28 +34,23 @@ footer{
     margin-top: 10px; 
 }
 
-<<<<<<< Updated upstream
 .contact-container{
     display: flex;
-=======
+}
+
 #footer-contact-spans div{
     display: flex;
     flex-direction: row;
->>>>>>> Stashed changes
 }
 
 .material-icons{
     margin-right: 5px;
 }
 
-<<<<<<< Updated upstream
 #footer-contact-spans-inner{
     display: flex;
     justify-content: space-between;
 }
 
-
-=======
 /* Footer End */
->>>>>>> Stashed changes
 

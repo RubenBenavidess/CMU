@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 @charset "utf-8";
 /* CSS Document */
 
@@ -8,18 +6,14 @@ nav a{
 	color: inherit;
 }
 
->>>>>>> Stashed changes
 nav{
     display: flex;
     flex-direction: row;
     margin: 10px 0;
     padding: 20px;
-<<<<<<< Updated upstream
-=======
 }
 
-#header-nav{   
->>>>>>> Stashed changes
+#header-nav{
     border-bottom: 3px solid rgb(214, 219, 223);
 }
 
@@ -27,13 +21,11 @@ ul{
     list-style: none;
 }
 
-<<<<<<< Updated upstream
 a{
     text-decoration: none;
     color: #fff;
 }
-=======
->>>>>>> Stashed changes
+
 
 #nav-left-ul{
     display: flex;
@@ -57,7 +49,6 @@ a{
     Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     font-weight: 900;
-<<<<<<< Updated upstream
 }
 
 #logo{
@@ -76,13 +67,11 @@ a{
 
 #mobile-menu-container{
     display: none;
-=======
 	max-width: 30%;
 }
 
 #logo{
 	width: 50%;
->>>>>>> Stashed changes
 }
 
 /* Snippet modified from: eluda, recovered from: https://app.ui-snippets.com/buttons/overfold */
@@ -202,9 +191,4 @@ to {
 }
 }
 
-<<<<<<< Updated upstream
 /* End Snippet */
-=======
-/* End Snippet */
-
->>>>>>> Stashed changes

@@ -39,6 +39,9 @@
     #footer-contact-spans{
         margin: 0;
     }
+    #footer-contact-spans{
+        flex-direction: column;
+    }
     footer #nav-left-ul{
         justify-content: center;
     }

@@ -32,6 +32,15 @@
 	padding: 8px;
 }
 
+.infoContainer a{
+  color: #FF9A62;
+  font-weight: 700;
+}
+
+.infoContainer a:hover{
+  text-decoration: underline;
+}
+
 .imgContainer{
 	width: 75%;
 	margin: auto;
@@ -65,6 +74,7 @@ button[type="submit"]{
 	margin-top: 24px;
 	width: 100%;
 }
+
 
 /*snippet from eluda recovered from: https://app.ui-snippets.com/buttons/3d-button-2 */
 .btn-54,
@@ -124,7 +134,8 @@ transparent;
 }
 .btn-54 .content {
   background: 
-#fff;
+#85929E;
+transition: 0.65s;
   color: 
 #000;
   display: grid;
@@ -137,7 +148,7 @@ transparent;
 }
 .btn-54 .depth {
   background: 
-#ccc;
+#4D5656;
   height: 10%;
   top: 84%;
 }
@@ -150,7 +161,7 @@ transparent;
 }
 .btn-54 .shadow {
   background: 
-#777;
+#000;
   height: 6%;
   top: 94%;
 }
@@ -165,4 +176,10 @@ transparent;
 }
 .btn-54:active .shadow {
   transform: translateY(-30%);
+}
+
+.btn-54 .content:hover{
+  transition: 0.65s;
+  background: #b1bac2;
+  font-size: larger;
 }

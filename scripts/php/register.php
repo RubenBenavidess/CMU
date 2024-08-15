@@ -31,13 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($userCount > 0) {
             $response['invalidUser'] = true;
-            echo json_encode($response);
-            exit;
         }
     } else {
         $response['error'] = 'Error en la verificación del nombre de usuario.';
-        echo json_encode($response);
-        exit;
     }
     
     // Verificar si el correo electrónico ya existe
@@ -51,13 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($emailCount > 0) {
             $response['invalidEmail'] = true;
-            echo json_encode($response);
-            exit;
         }
     } else {
         $response['error'] = 'Error en la verificación del correo electrónico.';
-        echo json_encode($response);
-        exit;
     }
     
     // Insertar el nuevo usuario

@@ -10,33 +10,80 @@ document.getElementById('formRegister').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Redirige al usuario si el registro fue exitoso
             window.location.href = 'main.html';
         } else {
-            // Muestra mensajes de error específicos
             if (data.invalidUser) {
-                console.log("Nombre de usuario ya existe.");
-                // Aquí puedes mostrar un mensaje en la interfaz de usuario
-                // Ejemplo: document.getElementById('userError').innerText = 'Nombre de usuario ya existe.';
+				document.getElementById('msgInvUser').style.display = 'block';
+				setBorderColor("username", "#FF6254");
             }
-            if (data.invalidEmail) {
-                console.log("Correo electrónico ya existe.");
-                // Aquí puedes mostrar un mensaje en la interfaz de usuario
-                // Ejemplo: document.getElementById('emailError').innerText = 'Correo electrónico ya existe.';
-            }
+			else{
+				setBorderColor("username", "#88FF57");
+			}
+			if (data.invalidEmail) {
+				document.getElementById('msgInvEmail').style.display = 'block';
+				setBorderColor("email", "#FF6254");
+			}
+			else{
+				setBorderColor("email", "#88FF57");
+			}
             if (data.error) {
                 console.log("Error: " + data.error);
-                // Aquí puedes mostrar un mensaje genérico en la interfaz de usuario
-                // Ejemplo: document.getElementById('generalError').innerText = 'Hubo un problema al registrar. Inténtalo de nuevo más tarde.';
             }
         }
     })
     .catch(error => {
         console.error('Hubo un problema con la operación fetch');
-        alert('Hubo un problema al intentar registrar. Inténtalo de nuevo más tarde.');
     });
 });
 
+document.getElementById('username').addEventListener('input', function(){
+	document.getElementById('msgInvUser').style.display = 'none';
+	this.style.border = 'none';
+});
+
+document.getElementById('email').addEventListener('input', function(){
+	document.getElementById('msgInvEmail').style.display = 'none';
+	this.style.border = 'none';
+});
+
+document.getElementById('password').addEventListener('input', function(){
+	document.getElementById('msgInvPwd').style.display = 'none';
+	this.style.border = 'none';
+});
+
+document.getElementById('password').addEventListener('blur', function(){
+	const pattern = new RegExp(this.getAttribute('pattern'));
+    
+    if (!pattern.test(this.value)) {
+		setBorderColor("password", "#FF6254");
+        document.getElementById('msgInvPwd').style.display = 'block';
+    } else {
+        setBorderColor("password", "#88FF57");
+        document.getElementById('msgInvPwd').style.display = 'none';
+    }
+});
+
+document.getElementById('bornDate').addEventListener('input', function(){
+	document.getElementById('msgInvBornDate').style.display = 'none';
+	this.style.border = 'none';
+});
+
+document.getElementById('bornDate').addEventListener('blur', function(){
+    if (!validateBornDate(this.value)) {
+		setBorderColor("bornDate", "#FF6254");
+        document.getElementById('msgInvBornDate').style.display = 'block';
+    } else {
+        setBorderColor("bornDate", "#88FF57");
+        document.getElementById('msgInvBornDate').style.display = 'none';
+    }
+});
+
+function validateBornDate(inputDate){
+	const todayDate = new Date();
+	const inputtedDate = new Date(inputDate);
+	
+	return (todayDate >= inputtedDate);
+}
 
 //Configuracion de maxdate
 const today = new Date();

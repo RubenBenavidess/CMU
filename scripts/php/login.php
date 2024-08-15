@@ -13,11 +13,11 @@ $response = [
 ];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
+    $username = $_POST["user"];
     $password = $_POST["password"];
     
     $loginQuery = "SELECT contrasenia FROM usuarios WHERE username = ?";
-    if ($statement = $connection->prepare($registerQuery)) {
+    if ($statement = $connection->prepare($loginQuery)) {
         $statement->bind_param("s", $username);
 
         if ($statement->execute()) {
@@ -32,14 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$storedPassword = $row['contrasenia'];
 
 				if (password_verify($password, $storedPassword)) {
-					session_start();
 					$_SESSION['username'] = $username;
 					$_SESSION['loggedin'] = true;
 					$response['success'] = true;
 				} else {
 					$response['invalidPassword'] = true;
-					echo json_encode($response);
-					exit;
 				}
 			}
         } 

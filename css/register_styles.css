@@ -52,7 +52,9 @@
 
 /* INPUTS */
 input[type="text"],
-input[type="password"]{
+input[type="password"],
+input[type="email"],
+input[type="date"]{
 	width: 100%;
 }
 /* INPUTS END */

@@ -1,11 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMU - Registrar</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMU - Registro</title>
+
+<link rel="icon" type="image/x-icon" href="../img/ICONO.ico">
+<link href="../css/general_styles.css" rel="stylesheet" type="text/css">	
+<link href="../css/navbar_styles.css" rel="stylesheet" type="text/css">
+<link href="../css/footer_styles.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../css/medias_styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-    
+	<!-- Header: It will have the logo, login, register -->
+    <header>
+
+        <nav id="header-nav">
+
+            <!-- This is the left side of the nav -->
+            <div class="col-5">
+                <ul id="nav-left-ul">
+                    <li class="nav-left-item"><a href="main.html"><img id="logo" src="../img/LOGO.png" alt="Logo"></a></li>
+                    <li class="nav-left-item"><a href="main.html">CMU</a></li>
+                </ul>
+            </div>
+
+            <!-- This is the right side of the nav -->
+            <div class="col-7">
+                <ul id="nav-right-ul">
+                    <li class="nav-right-item"><button class="nav-button">
+                        <span class="text-container">
+                            <span class="text">Registrar</span>
+                        </span></button>
+					</li>
+                    <li class="nav-right-item"><button onClick="window.location.href = 'login.html'" class="nav-button">
+                        <span class="text-container">
+							<span class="text">Iniciar Sesión</span>
+                        </span></button>
+					</li>
+                </ul>
+            </div>
+
+            <!-- This is the hidden burguer for mobile -->
+            <div id="mobile-container" class="col-7">           
+
+                <ul id="nav-right-ul">
+                    
+                    <li class="nav-right-item">
+
+                        <button onclick="display_drop_menu()" id="drop-button" class="nav-button">
+                            <span class="text material-icons"
+                                        data-width="15px"
+                                        data-height="15px">
+                                        menu </span>
+                        </button>
+
+                        <div id="mobile-menu-container">
+
+                            <ul id="nav-right-ul">
+                                <li class="nav-right-item"><button onclick="window.location.href = 'register.html'" class="nav-button">
+                                    <span class="text-container">
+                                        <span class="text">Registrar</span>
+                                    </span></button></li>
+                                <li class="nav-right-item"><button onclick="window.location.href = 'login.html'" class="nav-button">
+                                    <span class="text-container">
+                                        <span class="text">Iniciar Sesión</span>
+                                    </span></button></li>
+                            </ul>
+                
+                        </div>
+
+                    </li>
+                        
+                    
+                </ul>            
+
+            </div>
+
+        </nav>
+    </header>
+	
+	<!-- Register section -->
+	<div class="container row">
+		<div class="col-4">
+			<div class="formContainer">
+			<form class="formRegister" id="formRegister" method="POST" action="../scripts/php/register.php">
+				<div class="formInputs">
+					<label for="username">
+						Nombre de Usuario:
+					</label>
+					<input id="username" name="username" type="text" required maxlength="20">
+					<label for="password">
+						Contraseña:
+					</label>
+					<input id="password" name="password" type="password" required minlength="8" maxlength="20"
+					   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+					   title="Debe contener al menos un número, una letra mayúscula y minúscula, y tener entre 8 y 20 caracteres.">
+
+					<label for="email">
+						Correo electrónico:
+					</label>
+					<input id="email" name="email" type="email" required maxlength="30">
+					<label for="bornDate">
+						Fecha de nacimiento:
+					</label>
+					<input id="bornDate" name="bornDate" type="date" required>
+					
+					<button id="btnRegister" type="submit" class="btn-54">
+                        <span class="shadow"></span>
+					    <span class="depth"></span>
+					    <span class="content"> REGISTRATE </span>
+					</button>
+				</div>
+			</form>
+			</div>
+		</div>
+		
+		<div class="infoContainer col-8">
+			<h2 id="infoTitle"> La comunidad universitaria que te ayudará a ser mejor en tus estudios </h2>
+			<div class="imgContainer">
+			<picture id="infoPic">
+                <source srcset="../img/img_community_small.jpg" media="(max-width: 400px)">
+                <source srcset="../img/img_community_medium.jpg" media="(max-width: 768px)">
+                <source srcset="../img/img_community_large.jpg">
+                <img id="infoImg" src="../img/img_community_large.jpg" alt="Community img">
+			</picture>
+				</div>
+			<p> Al registrarte obtenedrás los siguientes <a href="#"> beneficios </a> y aceptas los <a href="#"> Términos y condiciones. </a></p>
+		</div>
+	</div>
+	
+
+    <footer>
+
+        <nav id="footer-nav">
+
+            <div class="col-8">
+                <ul id="nav-left-ul">
+                    <li class="nav-left-item"><img src="#" alt="Logo"></li>
+                    <li class="nav-left-item"><span> &copy; 2024 CMU. Todos los Derechos Reservados.</span></li>
+                </ul>
+            </div>
+
+            <!-- This is the right side of the nav -->
+            <div class="col-4">
+                <div id="footer-contact-title">
+                    <span>CONTÁCTANOS</span>
+                </div>
+                <div id="footer-contact-spans">
+                    <div>
+                        <span class="material-icons"
+                                data-width="15px"
+                                data-height="15px">
+                                mail </span>
+                        <span>cmu@example.com</span>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </nav>
+
+    </footer>
+
+	<script src="../scripts/js/register.js"></script>
+    <script src="../scripts/js/dropmenu.js"></script>
 </body>
 </html>

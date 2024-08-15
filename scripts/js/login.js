@@ -13,11 +13,10 @@ document.getElementById('formLogin').addEventListener('submit', function(e) {
 		if(!data.success){
 			window.location.href = 'errorBDD.html';
 		}
-		
-        if (data.errorUsuario) {
+        if (data.invalidUser) {
             document.getElementById('msgInvUser').style.display = 'block';
         }
-        else if (data.errorPassword) {
+        else if (data.invalidPassword) {
             document.getElementById('msjInvPwd').style.display = 'block';
         }
 		else {

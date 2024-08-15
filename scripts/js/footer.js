@@ -1,6 +1,6 @@
 // JavaScript Document
 window.addEventListener('load', function() {
-    const contentHeight = document.querySelector('.content').offsetHeight;
+    const contentHeight = document.querySelector('.container').offsetHeight;
     const viewportHeight = window.innerHeight;
 
     const footer = document.getElementById('footer');

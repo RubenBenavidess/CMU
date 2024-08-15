@@ -62,12 +62,8 @@ ul{
 
 #mobile-menu-container{
     display: none;
-	max-width: 30%;
 }
 
-#logo{
-	width: 50%;
-}
 
 /* Snippet modified from: eluda, recovered from: https://app.ui-snippets.com/buttons/overfold */
 .nav-button,

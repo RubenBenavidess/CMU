@@ -40,7 +40,6 @@ footer{
 
 #footer-contact-spans div{
     display: flex;
-    flex-direction: row;
 }
 
 .material-icons{
@@ -51,6 +50,8 @@ footer{
     display: flex;
     justify-content: space-between;
 }
+
+
 
 /* Footer End */
 

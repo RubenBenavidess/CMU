@@ -73,10 +73,6 @@ document.getElementById('bornDate').addEventListener('input', function(){
 });
 
 document.getElementById('bornDate').addEventListener('blur', function(){
-	if (this.value.trim() === "") {
-        return;
-    }
-	
     if (!validateBornDate(this.value)) {
 		setBorderColor("bornDate", "#FF6254");
         document.getElementById('msgInvBornDate').style.display = 'block';

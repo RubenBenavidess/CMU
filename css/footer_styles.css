@@ -9,6 +9,10 @@ footer{
 	margin-top: 8px;
 }
 
+#footerLogo{
+	width: 65px;
+}
+
 #footer-nav{
     background-color: rgb(214, 219, 223);
     color: #000;

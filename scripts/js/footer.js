@@ -5,8 +5,6 @@ function adjustFooterPosition() {
     const footer = document.querySelector('footer');
     const footerHeight = footer.offsetHeight; 
 
-    console.log('contenido: ', (contentHeight + footerHeight));
-    console.log('viewport: ', viewportHeight);
     if ((contentHeight + footerHeight) >= viewportHeight) {
         footer.style.position = 'absolute';
         footer.style.bottom = 'auto';

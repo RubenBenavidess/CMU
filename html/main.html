@@ -30,14 +30,16 @@
             <!-- This is the right side of the nav -->
             <div class="non-mobile col-7">
                 <ul id="nav-right-ul">
-                    <li class="nav-right-item"><button onclick="window.location.href = 'register.html'" class="nav-button">
-                        <span class="text-container">
+                    <li class="nav-right-item">
+                        <button onclick="window.location.href = 'register.html'" class="nav-button">
                             <span class="text">Registrar</span>
-                        </span></button></li>
-                    <li class="nav-right-item"><button onclick="window.location.href = 'login.html'" class="nav-button">
-                        <span class="text-container">
+                        </button>
+                    </li>
+                    <li class="nav-right-item">
+                        <button onclick="window.location.href = 'login.html'" class="nav-button">
 							<span class="text">Iniciar Sesión</span>
-                        </span></button></li>
+                        </button>
+                    </li>
                 </ul>
             </div>
 
@@ -77,6 +79,42 @@
 
             </div>
 
+            <!-- This is the logged in menu -->
+
+            <div class="logged-in col-7">
+
+                <ul id="nav-right-ul">
+
+                    <li class="nav-right-item">
+
+                        <button onclick="display_user_drop_menu()" id="button-profile-img" class="nav-button">
+                            <img src="#" alt="Profile Pic" id="profile-img">
+                        </button>
+                    
+                        <div id="logged-in-submenu" class="col-7">
+
+                            <ul id="nav-right-ul">
+
+                                <li class="nav-right-item">
+                                    <span id="username"></span>
+                                </li>
+                
+                                <li class="nav-right-item">
+                                    <button onclick="window.location.href = 'login.html'" id="close-btn" class="nav-button">
+                                        <span class="text">Cerrar Sesión</span>
+                                    </button>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
         </nav>
 
 
@@ -93,18 +131,18 @@
                 <span>Recursos Académicos</span>
             </div>
             
-            <div>
+            <div id="resources-container">
                 
-                <!-- Probably php -->
-
+                
+                
             </div>
 
         </div>
 
         <!-- This is the right side of the main section -->
-        <div class="col-7">
+        <div id="main-img-container" class="col-7">
 
-            <img src="#" alt="Imagen Principal">
+            <img src="../img/temporary_main_img.jpg" id="main-img" alt="Imagen Principal">
 
         </div>
 
@@ -161,6 +199,7 @@
     </footer>
 
     <script src="../scripts/js/dropmenu.js"></script>
-	<script src="../scripts/js/footer.js"></script>
+    <script src="../scripts/js/main.js"></script>
+
 </body>
 </html>

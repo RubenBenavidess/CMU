@@ -1,1 +1,10 @@
-scripts/php/env.php
+# Configuración sensible
+backend/.env                 # tu archivo real con credenciales
+
+# Dependencias de Composer
+backend/vendor/              # todo el directorio generado por composer install
+
+# Cachés y archivos temporales
+backend/.phpunit.result.cache
+backend/.php_cs.cache
+backend/storage/

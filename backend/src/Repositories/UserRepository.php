@@ -20,7 +20,7 @@ class UserRepository {
      */
     public function findBy(string $field, string $value): ?array {
         // Validar campos permitidos para evitar inyección SQL
-        $allowedFields = ['id', 'username', 'correo']; // agrega más si lo necesitas
+        $allowedFields = ['idUsuario', 'username', 'correo']; // agrega más si lo necesitas
 
         if (!in_array($field, $allowedFields)) {
             throw new InvalidArgumentException("Campo no permitido: $field");

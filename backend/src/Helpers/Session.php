@@ -1,5 +1,6 @@
 <?php
 namespace Helpers;
+
 class Session {
     /**
      * Cargar o iniciar una nueva sesión para la persistencia de sesiones de usuario.
@@ -9,7 +10,6 @@ class Session {
             session_start();
         }
     }
-
 
     /**
      * Almacenar o cambiar un valor en la sesión.

@@ -15,13 +15,12 @@ class AuthController {
     public function __construct(\mysqli $db){ 
         $this->authService = new AuthService(new UserRepository($db)); 
     }
-
         
     /**
      * Verificar si el usuario está logueado.
      * @return boolean
      */
-    private function isLoggedIn(): bool{ 
+    public static function isLoggedIn(): bool{ 
         header('Content-Type: application/json'); 
         if($isLogged = Session::get('loggedin') === true){
             echo json_encode(['ok' => $isLogged, 'username' => Session::get('username')]); 

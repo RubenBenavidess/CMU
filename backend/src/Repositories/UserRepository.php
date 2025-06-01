@@ -23,7 +23,7 @@ class UserRepository {
         $allowedFields = ['idUsuario', 'username', 'correo']; // agrega más si lo necesitas
 
         if (!in_array($field, $allowedFields)) {
-            throw new InvalidArgumentException("Campo no permitido: $field");
+            throw new \InvalidArgumentException("Campo no permitido: $field");
         }
 
         $query = "SELECT * FROM usuarios WHERE $field = ?";
@@ -33,19 +33,15 @@ class UserRepository {
         return $st->get_result()->fetch_assoc() ?: null;
     }
 
-
     /**
      * Crear un nuevo usuario.
      * @param array $data
      * @return int
      */
     public function create(array $data): int {
-
         $st=$this->db->prepare('INSERT INTO usuarios(username,contrasenia,correo,fecha_nacimiento) VALUES (?,?,?,?)');
         $st->bind_param('ssss',$data['username'],password_hash($data['password'],PASSWORD_DEFAULT),$data['email'],$data['born_date']);
         $st->execute(); 
         return $st->insert_id;
     }
-
-    
 }

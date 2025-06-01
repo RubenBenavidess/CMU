@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use mysqli;
 use Helpers\Session; 
 use Services\AuthService; 
 use Repositories\UserRepository;
@@ -12,7 +13,7 @@ class AuthController {
      * Constructor de AuthController.
      * @param mysqli $db Conexión a la base de datos.
      */
-    public function __construct(\mysqli $db){ 
+    public function __construct(mysqli $db){ 
         $this->authService = new AuthService(new UserRepository($db)); 
     }
         
@@ -42,9 +43,7 @@ class AuthController {
      * @return void
      */
     public function register(){ 
-
-        if($this -> isLoggedIn() == false){
-
+        if($this->isLoggedIn() == false){
             header('Content-Type: application/json');
             
             $body = $this->getBody();  
@@ -68,7 +67,6 @@ class AuthController {
             } 
             echo json_encode($result);
         }
-
     }
 
     /**
@@ -76,9 +74,7 @@ class AuthController {
      * @return void
      */
     public function login(){ 
-
-        if($this -> isLoggedIn() == false){
-
+        if($this->isLoggedIn() == false){
             $body = $this->getBody();
             if(!isset($body['username'], $body['password']) ||
             empty($body['username']) || empty($body['password'])) {

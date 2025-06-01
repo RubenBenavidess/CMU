@@ -13,6 +13,7 @@ class VariantController {
     /**
      * Constructor de VariantController.
      * @param \mysqli $db Conexión a la base de datos.
+     * @return void
      */
     public function __construct(\mysqli $db) {
         $this->variantService = new VariantService(new VariantRepository($db));

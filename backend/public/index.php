@@ -17,7 +17,7 @@ $authController = new AuthController($connection);
 $variantController = new VariantController($connection);
 //$resController=new ResourceController($connection);
 //$evalController=new EvaluationController($connection);
-//$subController=new SubscriptionController($connection);
+$subController=new SubscriptionController($connection);
 
 (
     match($path){
@@ -26,9 +26,12 @@ $variantController = new VariantController($connection);
       'api/logout' => fn()=>$authController->logout(),
       'api/variants/getAll' => fn()=>$variantController->getAll(),
       'api/variants/getBy' => fn()=>$variantController->getBy(),
+      'api/subscriptions' => fn()=>$subController->getAll(),
+      'api/createsubscription' => fn()=>$subController->create(),
+      'api/deletesubscription' => fn()=>$subController->delete(),
+      'api/getsubscriptionbyid' => fn()=>$subController->getById(),
       //'api/resources/list'=>fn()=>$resCtrl->list(),
       //'api/resources/upload'=>fn()=>$resCtrl->upload(),
-      //'api/subscribe'=>fn()=>$subCtrl->subscribe(),
       //'api/eval/create'=>fn()=>$evalCtrl->create(),
       //'api/eval/get'   =>fn()=>$evalCtrl->get(),
       //'api/eval/submit'=>fn()=>$evalCtrl->submit(),

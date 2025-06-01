@@ -1,16 +1,18 @@
 <?php
-
 namespace Repositories;
 use mysqli;
 
 class ResourceRepository {
+    private mysqli $db;
 
     /**
      * Constructor de ResourceRepository.
      * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
-    public function __construct(private mysqli $db) {}
+    public function __construct(mysqli $db) {
+        $this->db = $db;
+    }
 
     /**
      * Buscar un recurso por campos específicos.
@@ -84,17 +86,5 @@ class ResourceRepository {
         $st->bind_param('iissss', $data['idAsignatura'], $data['idUsuario'], $data['nombre_recurso'], $data['tipo_recurso'], $data['contenido'], $fechaSubida);
         $st->execute();
         return $st->insert_id;
-    }
-
-    /**
-     * Eliminar un recurso por ID.
-     * @param int $id ID del recurso a eliminar.
-     * @return void
-     */
-    public function delete(int $id): void {
-        $query = "DELETE FROM recursos WHERE idRecurso = ?";
-        $st = $this->db->prepare($query);
-        $st->bind_param('i', $id);
-        $st->execute();
     }
 }

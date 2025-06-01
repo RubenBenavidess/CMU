@@ -1,15 +1,18 @@
 <?php
-
 namespace Services;
 use Repositories\SubscriptionRepository;
 
 class SubscriptionService {
+    private SubscriptionRepository $subscriptionRepository;
 
     /**
+     * Constructor de SubscriptionService.
      * @param SubscriptionRepository $subscriptionRepository
      * @return void
      */
-    public function __construct(private SubscriptionRepository $subscriptionRepository) {}
+    public function __construct(SubscriptionRepository $subscriptionRepository) {
+        $this->subscriptionRepository = $subscriptionRepository;
+    }
 
     /**
      * Obtener todas las suscripciones.

@@ -1,15 +1,18 @@
 <?php
-
 namespace Services;
 use Repositories\EvaluationRepository;
 
 class EvaluationService {
+    private EvaluationRepository $evaluationRepository;
 
     /**
+     * Constructor de EvaluationService.
      * @param EvaluationRepository $evaluationRepository
      * @return void
      */
-    public function __construct(private EvaluationRepository $evaluationRepository) {}
+    public function __construct(EvaluationRepository $evaluationRepository) {
+        $this->evaluationRepository = $evaluationRepository;
+    }
 
     /**
      * Crear una nueva evaluación.

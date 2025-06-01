@@ -1,5 +1,4 @@
 <?php
-
 namespace Controllers;
 
 use Helpers\Session;
@@ -7,12 +6,11 @@ use Services\SubscriptionService;
 use Repositories\SubscriptionRepository;
 
 class SubscriptionController {
-
     private SubscriptionService $subscriptionService;
 
     /**
      * Constructor de SubscriptionController.
-     * @param \mysqli $db Conexión a la base de datos.
+     * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
     public function __construct(\mysqli $db) {

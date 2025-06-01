@@ -1,12 +1,14 @@
 <?php
 use Dotenv\Dotenv;
 
-// Cargar variables de entorno
+/**
+ * Carga las variables de entorno y establece la conexión a la base de datos.
+ */
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->safeLoad();
 
 $host = $_ENV['DB_HOST'] ?? 'localhost';
-$db   = $_ENV['DB_NAME'] ?? 'cmu_db';
+$db   = $_ENV['DB_NAME'] ?? 'mi_base_de_datos';
 $user = $_ENV['DB_USER'] ?? 'root';
 $pass = $_ENV['DB_PASS'] ?? '';
 

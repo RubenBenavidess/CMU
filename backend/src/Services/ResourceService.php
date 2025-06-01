@@ -1,15 +1,18 @@
 <?php
-
 namespace Services;
 use Repositories\ResourceRepository;
 
 class ResourceService {
+    private ResourceRepository $resourceRepository;
 
     /**
+     * Constructor de ResourceService.
      * @param ResourceRepository $resourceRepository
      * @return void
      */
-    public function __construct(private ResourceRepository $resourceRepository) {}
+    public function __construct(ResourceRepository $resourceRepository) {
+        $this->resourceRepository = $resourceRepository;
+    }
 
     /**
      * Obtener todos los recursos.
@@ -20,7 +23,7 @@ class ResourceService {
     }
 
     /**
-     * Obtener recursos por campos específicos.
+     * Obtener recursos por varios campos.
      * @param array $fields Array de nombres de columnas a buscar.
      * @param array $values Array de valores correspondientes a los campos.
      * @return array|null Recurso encontrado o null si no existe.

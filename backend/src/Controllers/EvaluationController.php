@@ -1,5 +1,4 @@
 <?php
-
 namespace Controllers;
 
 use Helpers\Session;
@@ -7,12 +6,11 @@ use Services\EvaluationService;
 use Repositories\EvaluationRepository;
 
 class EvaluationController {
-
     private EvaluationService $evaluationService;
 
     /**
      * Constructor de EvaluationController.
-     * @param \mysqli $db Conexión a la base de datos.
+     * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
     public function __construct(\mysqli $db) {

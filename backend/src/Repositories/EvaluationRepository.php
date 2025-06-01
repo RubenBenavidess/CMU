@@ -1,16 +1,18 @@
 <?php
-
 namespace Repositories;
 use mysqli;
 
 class EvaluationRepository {
+    private mysqli $db;
 
     /**
      * Constructor de EvaluationRepository.
      * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
-    public function __construct(private mysqli $db) {}
+    public function __construct(mysqli $db) {
+        $this->db = $db;
+    }
 
     /**
      * Buscar una evaluación por campos específicos.

@@ -1,16 +1,18 @@
 <?php
-
 namespace Repositories;
 use mysqli;
 
 class SubscriptionRepository {
+    private mysqli $db;
 
     /**
      * Constructor de SubscriptionRepository.
      * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
-    public function __construct(private mysqli $db) {}
+    public function __construct(mysqli $db) {
+        $this->db = $db;
+    }
 
     /**
      * Buscar una suscripción por campos específicos.

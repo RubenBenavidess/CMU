@@ -8,7 +8,7 @@ class SubjectRepository {
     /**
      * Constructor de SubjectRepository.
      * @param mysqli $db Conexión a la base de datos.
-     * @return void 
+     * @return void
      */
     public function __construct(private mysqli $db) {}
 

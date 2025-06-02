@@ -3,10 +3,14 @@ namespace Controllers;
 
 use Helpers\Session;
 use Services\SubscriptionService;
+use Services\UserVariantService;
 use Repositories\SubscriptionRepository;
+use Repositories\UserVariantRepository;
+
 
 class SubscriptionController {
     private SubscriptionService $subscriptionService;
+    private UserVariantService $userVariantService;
 
     /**
      * Constructor de SubscriptionController.
@@ -15,100 +19,104 @@ class SubscriptionController {
      */
     public function __construct(\mysqli $db) {
         $this->subscriptionService = new SubscriptionService(new SubscriptionRepository($db));
-    }
-
-    /**
-     * Obtener todas las suscripciones.
-     * @return array|null Lista de suscripciones o null si no hay resultados.
-     */
-    public function getAll(): ?array {
-        header('Content-Type: application/json');
-        if (!Session::get('loggedin')) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return null;
-        }
-
-        $subscriptions = $this->subscriptionService->getAll();
-        if ($subscriptions) {
-            echo json_encode(['ok' => true, 'data' => $subscriptions]);
-            return $subscriptions;
-        } else {
-            echo json_encode(['ok' => false, 'msg' => 'no-subscriptions-found']);
-            return null;
-        }
+        $this->userVariantService = new UserVariantService(new UserVariantRepository($db));
     }
 
     /**
      * Crear una nueva suscripción.
-     * @return void
      */
-    public function create(): void {
+    public function create(){
+
         header('Content-Type: application/json');
-        if (!Session::get('loggedin')) {
+
+        if(!Session::get('loggedin')) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return;
         }
 
-        $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        if (!isset($body['idUsuario'], $body['idAsignatura']) || empty($body['idUsuario']) || empty($body['idAsignatura'])) {
+        $userID = Session::get('idUsuario');
+        if (!$userID) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
+            return;
+        }
+
+        $parms = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
+        if (!isset($parms['idVariante']) || empty($parms['idVariante'])) {
             echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
             return;
         }
 
-        $data = [
-            'idUsuario' => $body['idUsuario'],
-            'idAsignatura' => $body['idAsignatura'],
-            'fecha_inicio' => $body['fecha_inicio'] ?? date('Y-m-d H:i:s')
+        $newSuscription = [
+            'idUsuario' => $userID,
+            'idVariante' => $parms['idVariante']
         ];
 
-        $result = $this->subscriptionService->create($data);
-        echo json_encode($result);
+        $result = $this->subscriptionService->create($newSuscription);
+
+        if($result['ok']) {
+        
+            $newUserVariant = [
+                'idUsuario' => $userID,
+                'idVariante' => $parms['idVariante']
+            ];
+
+            $subResult = $this->userVariantService->create($newUserVariant);
+            echo json_encode($subResult);
+
+        } else {
+            echo json_encode($result);
+        }
     }
 
     /**
-     * Eliminar una suscripción por ID.
+     * Desactivar una suscripción por ID.
      * @return void
      */
-    public function delete(): void {
+    public function deactivate(): void {
         header('Content-Type: application/json');
-        if (!Session::get('loggedin')) {
+
+        $userID = Session::get('idUsuario');
+        if (!$userID) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return;
-        }
-
-        $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        if (!isset($body['idSuscripcion']) || empty($body['idSuscripcion'])) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-id']);
-            return;
-        }
-
-        $result = $this->subscriptionService->delete((int)$body['idSuscripcion']);
-        echo json_encode($result);
-    }
-
-    /**
-     * Obtener una suscripción por ID.
-     * @return array|null Suscripción encontrada o null si no existe.
-     */
-    public function getById(): ?array {
-        header('Content-Type: application/json');
-        if (!Session::get('loggedin')) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return null;
         }
 
         $parms = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
         if (!isset($parms['idSuscripcion']) || empty($parms['idSuscripcion'])) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-id']);
+            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
+            return;
+        }
+
+        $result = $this->subscriptionService->deactivate((int)$userID, (int)$parms['idSuscripcion']);
+        echo json_encode($result);
+    }
+
+    /**
+     * Obtener una suscripción por ID de usuario.
+     * @return array|null Suscripción encontrada o null si no existe.
+     */
+    public function getUserSubs(): ?array {
+        header('Content-Type: application/json');
+        if (!Session::get('loggedin')) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return null;
         }
 
-        $subscription = $this->subscriptionService->getById((int)$parms['idSuscripcion']);
-        if ($subscription) {
-            echo json_encode(['ok' => true, 'data' => $subscription]);
-            return $subscription;
+        $userID = Session::get('idUsuario');
+        if (!$userID) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
+            return null;
+        }
+        
+        $keys = ["idUsuario"];
+        $values = [$userID];
+
+        $subscriptions = $this->subscriptionService->getBy($keys, $values);
+        if ($subscriptions) {
+            echo json_encode(['ok' => true, 'data' => $subscriptions]);
+            return $subscriptions;
         } else {
-            echo json_encode(['ok' => false, 'msg' => 'subscription-not-found']);
+            echo json_encode(['ok' => false, 'msg' => 'no-subscription-found']);
             return null;
         }
     }

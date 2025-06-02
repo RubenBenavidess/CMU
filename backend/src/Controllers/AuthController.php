@@ -50,28 +50,35 @@ class AuthController {
      * @return void
      */
     public function register(): void { 
-        header('Content-Type: application/json');
-        
-        $body = $this->getBody();  
-        if (!isset($body['username'], $body['password'], $body['email'], $body['bornDate']) ||
-            empty($body['username']) || empty($body['password']) ||
-            empty($body['email']) || empty($body['bornDate'])) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
-            return;
-        }
+        if(!self::isLoggedIn()){
+            
+            header('Content-Type: application/json');
+            
+            $body = $this->getBody();  
+            if (!isset($body['username'], $body['password'], $body['email'], $body['bornDate']) ||
+                empty($body['username']) || empty($body['password']) ||
+                empty($body['email']) || empty($body['bornDate'])) {
+                echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
+                return;
+            }
 
-        $newUser = [
-            'username' => $body['username'],
-            'password' => $body['password'],
-            'email' => $body['email'],          
-            'born_date' => $body['bornDate']      
-        ];  
-        $result = $this->authService->register($newUser); 
-        if ($result['ok']) {
-            Session::set('username', $newUser['username']);
-            Session::set('loggedin', true);
-        } 
-        echo json_encode($result);
+            $newUser = [
+                'username' => $body['username'],
+                'password' => $body['password'],
+                'email' => $body['email'],          
+                'born_date' => $body['bornDate']      
+            ];  
+            $result = $this->authService->register($newUser); 
+            if ($result['ok']) {
+                Session::set('idUsuario', $result['user']['idUsuario']);
+                Session::set('username', $newUser['username']);
+                Session::set('loggedin', true);
+            } 
+            echo json_encode($result);
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode(['ok' => false, 'msg' => 'already-logged-in']);
+        }
     }
 
     /**
@@ -91,6 +98,7 @@ class AuthController {
             header('Content-Type: application/json'); 
             $result = $this->authService->login($body['username'], $body['password']); 
             if ($result['ok']) {
+                Session::set('idUsuario', $result['user']['idUsuario']);
                 Session::set('username', $body['username']);
                 Session::set('loggedin', true);
             }

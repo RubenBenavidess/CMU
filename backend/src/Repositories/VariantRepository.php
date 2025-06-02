@@ -21,6 +21,7 @@ class VariantRepository {
      * @return array|null
      */
     public function getBy(array $fields, array $values): ?array {
+        
         $allowedFields = ['idVariante', 'idAsignatura', 'nombre_variante'];
         foreach ($fields as $f) {
             if (!in_array($f, $allowedFields)) {
@@ -39,7 +40,7 @@ class VariantRepository {
         $types = str_repeat('s', count($values));
         $st->bind_param($types, ...$values);
         $st->execute();
-        return $st->get_result()->fetch_assoc() ?: null;
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: null;
     }
 
     /**

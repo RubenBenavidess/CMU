@@ -1,91 +1,151 @@
+/* ========== MEDIA QUERIES RESPONSIVE ========== */
+
+/* Breakpoint 1300px - Ajuste para pantallas grandes */
 @media screen and (max-width: 1300px) {
     .col-8 {
         width: 58.33%;
     }
-    .col-4{
+    .col-4 {
         width: 41.66%;
     }
 }
 
+/* Breakpoint 1050px - Transición a layout más equilibrado */
 @media screen and (max-width: 1050px) {
     .col-8 {
         width: 51%;
     }
-    .col-4{
+    .col-4 {
         width: 49%;
     }
+    
+    /* Optimización del footer para pantallas medianas */
+    #footer-contact-spans-inner {
+        gap: 20px;
+        padding: 0 15px;
+    }
 }
 
+/* Breakpoint 880px - Ajustes para tablets */
 @media screen and (max-width: 880px) {
-    #footer-contact-spans-inner{
+    #footer-contact-spans-inner {
         flex-direction: column;
         align-items: center;
+        gap: 15px;
+    }
+    
+    /* Mejora en la visualización de contactos */
+    .contact-container {
+        width: 100%;
         justify-content: center;
     }
 }
 
+/* Breakpoint 580px - Versión móvil */
 @media screen and (max-width: 580px) {
-
-    #footer-nav{
-        flex-direction: column;
-    }
-    .col-4{
+    /* Ajustes generales de layout */
+    .col-4,
+    .col-5,
+    .col-7,
+    .col-8 {
         width: 100%;
+        margin-bottom: 20px;
     }
-    .col-8{
-        width: 100%;
-        margin-bottom: 20px;        
-    }
-    #footer-contact-spans{
-        margin: 0;
-    }
-    #footer-contact-spans{
+    
+    /* Reorganización del footer */
+    #footer-nav {
         flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
-    footer #nav-left-ul{
+    
+    #footer-contact-spans {
+        margin: 15px 0;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    footer #nav-left-ul {
         justify-content: center;
+        margin-bottom: 15px;
     }
-    #mobile-container{
+    
+    /* Menú móvil */
+    #mobile-container {
         display: block;
-        width: 40%;
+        width: 100%;
+        position: relative;
     }
-    #mobile-container button{
+    
+    #mobile-container button {
         background-color: transparent;
         border: none;
-    }
-    #mobile-container ul{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    #mobile-container ul li{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-    }
-    #mobile-menu-container #nav-right-ul{
-        display: flex;
-        flex-direction: column;
-    }
-    .non-mobile{
-        display: none;
-    }
-    .main-section{
-        flex-direction: column;
-    }
-    .main-section .col-5{
-        margin-bottom: 10px;
-        margin-right: 0;
-    }
-    .col-5, .col-7{
+        padding: 10px;
         width: 100%;
     }
+    
+    #mobile-container ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 0;
+    }
+    
+    #mobile-container ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    #mobile-menu-container #nav-right-ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Ocultar elementos de desktop */
+    .non-mobile {
+        display: none;
+    }
+    
+    /* Ajustes específicos para secciones principales */
+    .main-section {
+        flex-direction: column;
+    }
+    
+    .main-section .col-5 {
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+    
+    /* Alineación de texto en móviles */
     #footer-nav .col-8 li {
         text-align: center;
     }
-    #mobile-container span{
+    
+    #mobile-container span {
         margin: 0;
+    }
+    
+    /* Mejora en los márgenes para móviles */
+    .formContainer, 
+    .infoContainer {
+        padding: 15px;
+    }
+}
+
+/* Breakpoint adicional para pantallas muy pequeñas (opcional) */
+@media screen and (max-width: 400px) {
+    /* Ajustes específicos para dispositivos muy pequeños */
+    #mobile-container button {
+        padding: 8px;
+    }
+    
+    #footer-contact-spans-inner {
+        gap: 10px;
+    }
+    
+    .contact-container {
+        font-size: 0.9rem;
     }
 }

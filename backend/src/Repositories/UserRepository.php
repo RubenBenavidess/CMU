@@ -1,16 +1,18 @@
 <?php
-
 namespace Repositories;
 use mysqli;
 
 class UserRepository {
+    private mysqli $db;
 
     /**
      * Constructor de UserRepository.
      * @param mysqli $db Conexión a la base de datos.
      * @return void 
      */
-    public function __construct(private mysqli $db) {}
+    public function __construct(mysqli $db) {
+        $this->db = $db;
+    }
 
     /**
      * Buscar un usuario por cualquier campo.
@@ -19,11 +21,9 @@ class UserRepository {
      * @return array|null
      */
     public function findBy(string $field, string $value): ?array {
-        // Validar campos permitidos para evitar inyección SQL
-        $allowedFields = ['idUsuario', 'username', 'correo']; // agrega más si lo necesitas
-
+        $allowedFields = ['idUsuario', 'username', 'correo'];
         if (!in_array($field, $allowedFields)) {
-            throw new InvalidArgumentException("Campo no permitido: $field");
+            throw new \InvalidArgumentException("Campo no permitido: $field");
         }
 
         $query = "SELECT * FROM usuarios WHERE $field = ?";
@@ -33,19 +33,16 @@ class UserRepository {
         return $st->get_result()->fetch_assoc() ?: null;
     }
 
-
     /**
      * Crear un nuevo usuario.
      * @param array $data
      * @return int
      */
     public function create(array $data): int {
-
-        $st=$this->db->prepare('INSERT INTO usuarios(username,contrasenia,correo,fecha_nacimiento) VALUES (?,?,?,?)');
-        $st->bind_param('ssss',$data['username'],password_hash($data['password'],PASSWORD_DEFAULT),$data['email'],$data['born_date']);
+        $st = $this->db->prepare('INSERT INTO usuarios(username, contrasenia, correo, fecha_nacimiento) VALUES (?, ?, ?, ?)');
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        $st->bind_param('ssss', $data['username'], $hashedPassword, $data['email'], $data['born_date']);
         $st->execute(); 
         return $st->insert_id;
     }
-
-    
 }

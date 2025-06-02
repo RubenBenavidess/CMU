@@ -1,15 +1,18 @@
 <?php
-
 namespace Services;
 use Repositories\VariantRepository;
 
 class VariantService {
+    private VariantRepository $variantRepository;
 
     /**
+     * Constructor de VariantService.
      * @param VariantRepository $variantRepository
      * @return void 
      */
-    public function __construct(private VariantRepository $variantRepository){}
+    public function __construct(VariantRepository $variantRepository) {
+        $this->variantRepository = $variantRepository;
+    }
 
     /**
      * Obtener variantes por varios campos.

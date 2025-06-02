@@ -1,15 +1,18 @@
 <?php
-
 namespace Services;
 use Repositories\UserRepository;
 
 class AuthService {
-    
+    private UserRepository $userRepository;
+
     /**
+     * Constructor de AuthService.
      * @param UserRepository $userRepository
      * @return void 
      */
-    public function __construct(private UserRepository $userRepository){}
+    public function __construct(UserRepository $userRepository) {
+        $this->userRepository = $userRepository;
+    }
     
     /**
      * Registrar un nuevo usuario.
@@ -17,12 +20,14 @@ class AuthService {
      * @return array Resultado con 'ok' y 'msg' o 'id' del usuario creado.
      */
     public function register(array $data): array {
-        if($this->userRepository->findBy('username', $data['username'])) 
-            return ['ok'=>false,'msg'=>'username-exists'];
-        if($this->userRepository->findBy('correo', $data['email'])) 
-            return ['ok'=>false,'msg'=>'email-exists'];
-        $id=$this->userRepository->create($data); 
-        return ['ok'=>true,'id'=>$id];
+        if ($this->userRepository->findBy('username', $data['username'])) {
+            return ['ok' => false, 'msg' => 'username-exists'];
+        }
+        if ($this->userRepository->findBy('correo', $data['email'])) {
+            return ['ok' => false, 'msg' => 'email-exists'];
+        }
+        $id = $this->userRepository->create($data); 
+        return ['ok' => true, 'id' => $id];
     }
     
     /**
@@ -31,11 +36,12 @@ class AuthService {
      * @param string $password Contraseña.
      * @return array Resultado con el usuario como array asociativo.
      */
-    public function login(string $username,string $password): array {
-        $user=$this->userRepository->findBy('username', $username);
-        if(!$user || !password_verify($password,$user['contrasenia'])) 
-            return ['ok'=>false, 'msg'=>'invalid-credentials'];
+    public function login(string $username, string $password): array {
+        $user = $this->userRepository->findBy('username', $username);
+        if (!$user || !password_verify($password, $user['contrasenia'])) {
+            return ['ok' => false, 'msg' => 'invalid-credentials'];
+        }
         unset($user['contrasenia']); 
-        return ['ok'=>true,'user'=>$user];
+        return ['ok' => true, 'user' => $user];
     }
 }

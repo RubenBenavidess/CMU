@@ -3,7 +3,7 @@
         'name' => 'espe-edu-ec/cmu-backend',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '07ebe4ce3ac54663e6ca104999e5631575be6d05',
+        'reference' => '3338cbc1bbd97e1cfd53e2a590f005c1078a76d7',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'espe-edu-ec/cmu-backend' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '07ebe4ce3ac54663e6ca104999e5631575be6d05',
+            'reference' => '3338cbc1bbd97e1cfd53e2a590f005c1078a76d7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

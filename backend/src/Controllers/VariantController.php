@@ -1,18 +1,16 @@
 <?php
-
 namespace Controllers;
 
 use Helpers\Session;
 use Services\VariantService;
 use Repositories\VariantRepository;
-use Controllers\AuthController;
 
 class VariantController {
     private VariantService $variantService;
 
     /**
      * Constructor de VariantController.
-     * @param \mysqli $db Conexión a la base de datos.
+     * @param mysqli $db Conexión a la base de datos.
      * @return void
      */
     public function __construct(\mysqli $db) {
@@ -21,12 +19,16 @@ class VariantController {
 
     /**
      * Obtener una variante por varios campos.
-     * @return void
+     * @return array|null
      */
     public function getBy(): ?array {
-        
         header('Content-Type: application/json');
         
+        if (!Session::get('loggedin')) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
+            return null;
+        }
+
         $parms = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
         unset($parms['path']);
         $keys = array_keys($parms);
@@ -52,16 +54,19 @@ class VariantController {
             echo json_encode(['ok' => false, 'msg' => 'no-variant-found']);
             return null;
         }
-
     }
 
     /**
      * Obtener todas las variantes.
      * @return array|null
      */
-    public function getALl(): ?array {
-
+    public function getAll(): ?array {
         header('Content-Type: application/json');
+        
+        if (!Session::get('loggedin')) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
+            return null;
+        }
 
         $variants = $this->variantService->getAll();
         if ($variants) {
@@ -72,6 +77,4 @@ class VariantController {
             return null;
         }
     }
-    
-
 }

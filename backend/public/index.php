@@ -8,6 +8,7 @@ use Controllers\VariantController;
 use Controllers\ResourceController;
 use Controllers\EvaluationController;
 use Controllers\SubscriptionController;
+use Controllers\SubjectController;
 
 /**
  * Inicia la sesión para manejar la autenticación de usuarios.
@@ -26,8 +27,8 @@ $path = $_GET['path'] ?? '';
 $authController = new AuthController($connection);
 $variantController = new VariantController($connection);
 $resourceController = new ResourceController($connection);
-$evaluationController = new EvaluationController($connection);
 $subscriptionController = new SubscriptionController($connection);
+$subjectController = new SubjectController($connection);
 
 /**
  * Enruta la solicitud al método correspondiente del controlador basado en el path.
@@ -40,16 +41,15 @@ $subscriptionController = new SubscriptionController($connection);
         'api/logout' => fn() => $authController->logout(),
         'api/isLoggedIn' => fn() => $authController->checkLoggedIn(),
         'api/variants/getAll' => fn() => $variantController->getAll(),
-        'api/variants/getBy' => fn() => $variantController->getBy(),
-        'api/subscriptions' => fn() => $subscriptionController->getAll(),
-        'api/createsubscription' => fn() => $subscriptionController->create(),
-        'api/deletesubscription' => fn() => $subscriptionController->delete(),
-        'api/getsubscriptionbyid' => fn() => $subscriptionController->getById(),
-        'api/resources/list' => fn() => $resourceController->list(),
-        'api/resources/upload' => fn() => $resourceController->upload(),
-        'api/eval/create' => fn() => $evaluationController->create(),
-        'api/eval/get' => fn() => $evaluationController->get(),
-        'api/eval/submit' => fn() => $evaluationController->submit(),
+        'api/variants/getBySubject' => fn() => $variantController->getBySubject(),
+        'api/Subs' => fn() => $subscriptionController->getAll(),
+        'api/createSub' => fn() => $subscriptionController->create(),
+        'api/deactivateSub' => fn() => $subscriptionController->deactivate(),
+        'api/userSubs' => fn() => $subscriptionController->getUserSubs(),
+        'api/resources/getAll' => fn() => $resourceController->list(),
+        'api/resources/create' => fn() => $resourceController->upload(),
+        'api/resources/delete' => fn() => $resourceController->upload(),
+        'api/subjects/getAll' => fn() => $subjectController->getAll(),
         default => function() {
             http_response_code(404);
             header('Content-Type: application/json');

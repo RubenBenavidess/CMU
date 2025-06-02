@@ -15,35 +15,48 @@ class SubscriptionRepository {
     }
 
     /**
-     * Buscar una suscripción por campos específicos.
-     * @param string $field1 Primer campo a buscar (ej: 'idUsuario').
-     * @param string $value1 Valor del primer campo.
-     * @param string $field2 Segundo campo a buscar (ej: 'idAsignatura').
-     * @param string $value2 Valor del segundo campo.
+     * Buscar una suscripción por campo.
+     * @param string $field Nombre del campo a buscar (ej: 'idSuscripcion', 'idUsuario', 'idVariante').
+     * @param string $value Valor a buscar en el campo.
      * @return array|null Suscripción encontrada o null si no existe.
      */
-    public function findBy(string $field1, string $value1, string $field2, string $value2): ?array {
-        $allowedFields = ['idUsuario', 'idAsignatura'];
-        if (!in_array($field1, $allowedFields) || !in_array($field2, $allowedFields)) {
-            throw new \InvalidArgumentException("Campo no permitido: $field1 o $field2");
+    public function findBy(string $field, string $value): ?array {
+        $allowedFields = ['idSuscripcion', 'idUsuario', 'idVariante'];
+        if (!in_array($field, $allowedFields)) {
+            throw new \InvalidArgumentException("Campo no permitido: $field");
         }
 
-        $query = "SELECT * FROM suscripciones WHERE $field1 = ? AND $field2 = ?";
+        $query = "SELECT * FROM suscripciones WHERE $field = ?";
         $st = $this->db->prepare($query);
-        $st->bind_param('ss', $value1, $value2);
+        $st->bind_param('s', $value);
         $st->execute();
         return $st->get_result()->fetch_assoc() ?: null;
     }
 
     /**
-     * Buscar una suscripción por ID.
-     * @param int $id ID de la suscripción.
+     * Buscar variantes por varios campos.
+     * @param array $fields Array de nombres de columnas a buscar.
+     * @param array $values Array de valores correspondientes a los campos.
      * @return array|null Suscripción encontrada o null si no existe.
      */
-    public function findById(int $id): ?array {
-        $query = "SELECT * FROM suscripciones WHERE idSuscripcion = ?";
+    public function getBy(array $fields, array $values): ?array {
+        $allowedFields = ['idSuscripcion', 'idUsuario', 'idVariante', 'estado'];
+        foreach ($fields as $f) {
+            if (!in_array($f, $allowedFields)) {
+                throw new \InvalidArgumentException("Campo no permitido: $f");
+            }
+        }
+
+        $whereClauses = [];
+        foreach ($fields as $f) {
+            $whereClauses[] = "$f = ?";
+        }
+        $whereSql = implode(' AND ', $whereClauses);
+        $query = "SELECT * FROM suscripciones WHERE $whereSql";
+
         $st = $this->db->prepare($query);
-        $st->bind_param('i', $id);
+        $types = str_repeat('s', count($values));
+        $st->bind_param($types, ...$values);
         $st->execute();
         return $st->get_result()->fetch_assoc() ?: null;
     }
@@ -65,23 +78,21 @@ class SubscriptionRepository {
      * @return int ID de la suscripción creada.
      */
     public function create(array $data): int {
-        $query = "INSERT INTO suscripciones (idUsuario, idAsignatura, fecha_inicio) VALUES (?, ?, ?)";
+        $query = "INSERT INTO suscripciones(idUsuario, idVariante) VALUES (?, ?)";
         $st = $this->db->prepare($query);
-        $fechaInicio = $data['fecha_inicio'] ?? date('Y-m-d H:i:s');
-        $st->bind_param('iis', $data['idUsuario'], $data['idAsignatura'], $fechaInicio);
+        $st->bind_param('ii', $data['idUsuario'], $data['idVariante']);
         $st->execute();
         return $st->insert_id;
     }
 
     /**
-     * Eliminar una suscripción por ID.
-     * @param int $id ID de la suscripción a eliminar.
-     * @return void
+     * Actualizar una suscripción.
+     * @param int $id ID de la suscripción a actualizar.
      */
-    public function delete(int $id): void {
-        $query = "DELETE FROM suscripciones WHERE idSuscripcion = ?";
+    public function deactivate(int $userId, int $suscriptionId): void {
+        $query = "UPDATE suscripciones SET estado = 'inactiva' WHERE idUsuario = ? AND idSuscripcion = ?";
         $st = $this->db->prepare($query);
-        $st->bind_param('i', $id);
+        $st->bind_param('ii', $id);
         $st->execute();
     }
 }

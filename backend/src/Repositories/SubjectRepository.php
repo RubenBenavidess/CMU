@@ -39,7 +39,7 @@ class SubjectRepository {
         $types = str_repeat('s', count($values));
         $st->bind_param($types, ...$values);
         $st->execute();
-        return $st->get_result()->fetch_assoc() ?: null;
+        return $st->get_result()-> fetch_all(MYSQLI_ASSOC) ?: null;
     }
 
     /**

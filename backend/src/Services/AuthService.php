@@ -27,6 +27,9 @@ class AuthService {
             return ['ok' => false, 'msg' => 'email-exists'];
         }
         $id = $this->userRepository->create($data); 
+        if(!$id) {
+            return ['ok' => false, 'msg' => 'registration-failed'];
+        }
         return ['ok' => true, 'id' => $id];
     }
     

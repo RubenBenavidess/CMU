@@ -95,4 +95,17 @@ class ResourceRepository {
         return $st->affected_rows;
     }
 
+    public function getByVariant(int $idVariante): ?array {
+        $query = "SELECT r.idRecurso, r.tipo, r.titulo, r.descripcion, r.file_path, r.creado_por, r.created_at,
+                        u.username AS creador
+                FROM recursos r
+                LEFT JOIN usuarios u ON u.idUsuario = r.creado_por
+                WHERE r.idVariante = ?";
+        $st = $this->db->prepare($query);
+        $st->bind_param('i', $idVariante);
+        $st->execute();
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: null;
+    }
+
+
 }

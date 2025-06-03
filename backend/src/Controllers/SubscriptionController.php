@@ -7,26 +7,23 @@ use Services\UserVariantService;
 use Repositories\SubscriptionRepository;
 use Repositories\UserVariantRepository;
 
-
 class SubscriptionController {
-    private SubscriptionService $subscriptionService;
-    private UserVariantService $userVariantService;
+    private SubscriptionService  $subscriptionService;
+    private UserVariantService   $userVariantService;
 
     /**
      * Constructor de SubscriptionController.
      * @param mysqli $db Conexión a la base de datos.
-     * @return void
      */
     public function __construct(\mysqli $db) {
         $this->subscriptionService = new SubscriptionService(new SubscriptionRepository($db));
-        $this->userVariantService = new UserVariantService(new UserVariantRepository($db));
+        $this->userVariantService  = new UserVariantService(new UserVariantRepository($db));
     }
 
     /**
-     * Crear una nueva suscripción.
+     * Crear una nueva suscripción (POST /api/createSub?idVariante=#).
      */
-    public function create(){
-
+    public function create(): void {
         header('Content-Type: application/json');
 
         $userID = Session::get('idUsuario');
@@ -42,30 +39,28 @@ class SubscriptionController {
         }
 
         $newSuscription = [
-            'idUsuario' => $userID,
-            'idVariante' => $parms['idVariante']
+            'idUsuario'  => $userID,
+            'idVariante' => (int)$parms['idVariante']
         ];
 
         $result = $this->subscriptionService->create($newSuscription);
-
-        if($result['ok']) {
-        
+        if ($result['ok']) {
+            // Si se creó la suscripción, también agregamos el rol en usuarios_variantes
+            // (de forma automática: rol = 'suscriptor' por defecto).
             $newUserVariant = [
-                'idUsuario' => $userID,
-                'idVariante' => $parms['idVariante']
+                'idUsuario'  => $userID,
+                'idVariante' => (int)$parms['idVariante']
             ];
-
             $subResult = $this->userVariantService->create($newUserVariant);
             echo json_encode($subResult);
-
         } else {
             echo json_encode($result);
         }
     }
 
     /**
-     * Desactivar una suscripción por ID.
-     * @return void
+     * Desactivar/Activar una suscripción existente.
+     * PUT /api/updateSubState?idSuscripcion=#  body: { "state": "inactiva" }
      */
     public function updateState(): void {
         header('Content-Type: application/json');
@@ -76,33 +71,32 @@ class SubscriptionController {
             return;
         }
 
+        // Obtener idSuscripcion desde GET o body
         $parms = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        if (!isset($parms['idSuscripcion']) || empty($parms['idSuscripcion'])) {
+        $idSuscripcion = isset($parms['idSuscripcion']) ? (int)$parms['idSuscripcion'] : null;
+        if (!$idSuscripcion) {
             echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
             return;
         }
 
+        // Obtener estado desde el JSON { "state": "activa" | "inactiva" }
         $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        if (!isset($body['state']) && empty($body['state'])) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
-            return;
-        }
-
-        if(!in_array($body['state'], ['activa', 'inactiva'])) {
+        if (!isset($body['state']) || !in_array($body['state'], ['activa', 'inactiva'])) {
             echo json_encode(['ok' => false, 'msg' => 'invalid-state']);
             return;
         }
 
-        $result = $this->subscriptionService->updateState((int)$userID, (int)$parms['idSuscripcion'], $body['state']);
+        $result = $this->subscriptionService->updateState($userID, $idSuscripcion, $body['state']);
         echo json_encode($result);
     }
 
     /**
-     * Obtener suscripciones por ID de usuario.
-     * @return array|null Suscripción encontrada o null si no existe.
+     * GET /api/userSubs
+     * Devuelve array de suscripciones activas del usuario (con el campo 'rol').
      */
     public function getUserSubs(): ?array {
         header('Content-Type: application/json');
+
         if (!Session::get('loggedin')) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return null;
@@ -113,10 +107,9 @@ class SubscriptionController {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return null;
         }
-        
 
         $subscriptions = $this->subscriptionService->getUserSubs((int)$userID);
-        if ($subscriptions) {
+        if ($subscriptions !== null) {
             echo json_encode(['ok' => true, 'data' => $subscriptions]);
             return $subscriptions;
         } else {

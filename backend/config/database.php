@@ -7,12 +7,12 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->safeLoad();
 
-$host = 'localhost';
-$db   = 'mi_base_de_datos';
-$user = 'root';
-$pass = 'miPasswordSeguro';
+$host = $_ENV['DB_HOST'] ?? 'localhost';
+$db   = $_ENV['DB_NAME'] ?? 'mi_base_de_datos';
+$user = $_ENV['DB_USER'] ?? 'root';
+$pass = $_ENV['DB_PASS'] ?? '';
 
-$connection = new mysqli($host, $user, $pass, $db, 3307);
+$connection = new mysqli($host, $user, $pass, $db);
 if ($connection->connect_error) {
     http_response_code(500);
     die('DB Connection Error');

@@ -53,3 +53,8 @@
 
 /* Main Section End */
 
+#subs-container { margin-bottom: 24px; }
+.subs-grid      { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.sub-chip       { display:flex; align-items:center; gap:8px;
+                  border:1px solid #FF9A62; padding:4px 10px; border-radius:4px; }
+.sub-chip .nav-button:hover .text { color:#000; }

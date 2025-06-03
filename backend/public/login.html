@@ -12,7 +12,6 @@
 <link href="../css/login_styles.css" rel="stylesheet" type="text/css">	
 <link rel="stylesheet" href="../css/medias_styles.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script src="../scripts/js/session_protected.js"></script>
 </head>
 <body>
     
@@ -90,7 +89,7 @@
 	<div class="container row">
 		<div class="col-4">
 			<div class="formContainer">
-			<form class="formLogin" id="formLogin" method="POST" action="../scripts/php/login.php">
+			<form class="formLogin" id="formLogin">
 				<div class="formInputs">
 					<label for="user">Usuario</label>
 					<div class="wrap-input-8">
@@ -189,9 +188,8 @@
 
     </footer>
 	
-	<script src="../scripts/js/inputs.js"></script>
-	<script src="../scripts/js/login.js"></script>
-    <script src="../scripts/js/dropmenu.js"></script>
-	<script src="../scripts/js/footer.js"></script>
+	<script type="module" src="../js/api.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+
 </body>
 </html>

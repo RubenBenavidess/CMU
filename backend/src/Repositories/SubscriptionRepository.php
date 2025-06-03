@@ -18,9 +18,9 @@ class SubscriptionRepository {
      * Buscar una suscripción por campo.
      * @param string $field Nombre del campo a buscar (ej: 'idSuscripcion', 'idUsuario', 'idVariante').
      * @param string $value Valor a buscar en el campo.
-     * @return array|null Suscripción encontrada o null si no existe.
+     * @return bool Verdadero si la suscripción existe, falso en caso contrario.
      */
-    public function findBy(string $field, string $value): ?array {
+    public function findBy(string $field, string $value): bool {
         $allowedFields = ['idSuscripcion', 'idUsuario', 'idVariante'];
         if (!in_array($field, $allowedFields)) {
             throw new \InvalidArgumentException("Campo no permitido: $field");
@@ -30,7 +30,8 @@ class SubscriptionRepository {
         $st = $this->db->prepare($query);
         $st->bind_param('s', $value);
         $st->execute();
-        return $st->get_result()->fetch_assoc() ?: null;
+        $result = $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: null;
+        return $result ? true : false;
     }
 
     /**
@@ -58,7 +59,7 @@ class SubscriptionRepository {
         $types = str_repeat('s', count($values));
         $st->bind_param($types, ...$values);
         $st->execute();
-        return $st->get_result()->fetch_assoc() ?: null;
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: null;
     }
 
     /**
@@ -86,13 +87,30 @@ class SubscriptionRepository {
     }
 
     /**
-     * Actualizar una suscripción.
+     * Actualizar estado de una suscripción.
      * @param int $id ID de la suscripción a actualizar.
      */
-    public function deactivate(int $userId, int $suscriptionId): void {
-        $query = "UPDATE suscripciones SET estado = 'inactiva' WHERE idUsuario = ? AND idSuscripcion = ?";
+    public function updateState(int $userId, int $suscriptionId, string $newState): int {
+        $query = "UPDATE suscripciones SET estado = ? WHERE idUsuario = ? AND idSuscripcion = ?";
         $st = $this->db->prepare($query);
-        $st->bind_param('ii', $id);
+        $st->bind_param('sii', $newState, $userId, $suscriptionId);
         $st->execute();
+        return $st->affected_rows;
     }
+
+    public function getUserSubsWithRole(int $idUsuario): array {
+        $sql = "
+            SELECT s.*, v.nombre_variante, uv.rol
+            FROM suscripciones s
+            JOIN variantes v          ON v.idVariante   = s.idVariante
+            JOIN usuarios_variantes uv ON uv.idVariante = s.idVariante
+                                    AND uv.idUsuario = s.idUsuario
+            WHERE s.idUsuario = ?
+        ";
+        $st = $this->db->prepare($sql);
+        $st->bind_param('i', $idUsuario);
+        $st->execute();
+        return $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: [];
+    }
+
 }

@@ -7,41 +7,40 @@ class ResourceService {
 
     /**
      * Constructor de ResourceService.
-     * @param ResourceRepository $resourceRepository
-     * @return void
+     * @param ResourceRepository $resourceRepository Repositorio de recursos.
      */
     public function __construct(ResourceRepository $resourceRepository) {
         $this->resourceRepository = $resourceRepository;
     }
 
     /**
-     * Obtener todos los recursos.
-     * @return array|null Lista de recursos o null si no hay resultados.
+     * Crear un nuevo recurso.
+     * @param array $data Datos del recurso a crear.
+     * @return array Resultado con 'ok' y 'id' del recurso creado o mensaje de error.
      */
-    public function getAll(): ?array {
-        return $this->resourceRepository->getAll();
+    public function create(array $data): array {
+
+        $id = $this->resourceRepository->create($data);
+        if (!$id) {
+            return ['ok' => false, 'msg' => 'resource-creation-failed'];
+        }
+        return ['ok' => true, 'id' => $id];
+
     }
 
-    /**
-     * Obtener recursos por varios campos.
-     * @param array $fields Array de nombres de columnas a buscar.
-     * @param array $values Array de valores correspondientes a los campos.
-     * @return array|null Recurso encontrado o null si no existe.
-     */
     public function getBy(array $fields, array $values): ?array {
         return $this->resourceRepository->getBy($fields, $values);
     }
 
-    /**
-     * Subir un nuevo recurso.
-     * @param array $data Datos del recurso a crear.
-     * @return array Resultado con 'ok' y 'id' del recurso creado o mensaje de error.
-     */
-    public function upload(array $data): array {
-        if ($this->resourceRepository->findBy('nombre_recurso', $data['nombre_recurso'], 'idAsignatura', $data['idAsignatura'])) {
-            return ['ok' => false, 'msg' => 'resource-exists'];
+    public function delete(int $userId, int $resourceId): array {
+        if (!$this->resourceRepository->findBy('idRecurso', $resourceId)) {
+            return ['ok' => false, 'msg' => 'resource-not-found'];
         }
-        $id = $this->resourceRepository->create($data);
-        return ['ok' => true, 'id' => $id];
+        if ($this->resourceRepository->delete($userId, $resourceId)) {
+            return ['ok' => true, 'msg' => 'resource-deleted'];
+        } else {
+            return ['ok' => false, 'msg' => 'resource-deletion-failed'];
+        }
     }
+
 }

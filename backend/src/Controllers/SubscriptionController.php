@@ -29,11 +29,6 @@ class SubscriptionController {
 
         header('Content-Type: application/json');
 
-        if(!Session::get('loggedin')) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return;
-        }
-
         $userID = Session::get('idUsuario');
         if (!$userID) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
@@ -72,7 +67,7 @@ class SubscriptionController {
      * Desactivar una suscripción por ID.
      * @return void
      */
-    public function deactivate(): void {
+    public function updateState(): void {
         header('Content-Type: application/json');
 
         $userID = Session::get('idUsuario');
@@ -87,12 +82,23 @@ class SubscriptionController {
             return;
         }
 
-        $result = $this->subscriptionService->deactivate((int)$userID, (int)$parms['idSuscripcion']);
+        $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
+        if (!isset($body['state']) && empty($body['state'])) {
+            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
+            return;
+        }
+
+        if(!in_array($body['state'], ['activa', 'inactiva'])) {
+            echo json_encode(['ok' => false, 'msg' => 'invalid-state']);
+            return;
+        }
+
+        $result = $this->subscriptionService->updateState((int)$userID, (int)$parms['idSuscripcion'], $body['state']);
         echo json_encode($result);
     }
 
     /**
-     * Obtener una suscripción por ID de usuario.
+     * Obtener suscripciones por ID de usuario.
      * @return array|null Suscripción encontrada o null si no existe.
      */
     public function getUserSubs(): ?array {
@@ -108,10 +114,8 @@ class SubscriptionController {
             return null;
         }
         
-        $keys = ["idUsuario"];
-        $values = [$userID];
 
-        $subscriptions = $this->subscriptionService->getBy($keys, $values);
+        $subscriptions = $this->subscriptionService->getUserSubs((int)$userID);
         if ($subscriptions) {
             echo json_encode(['ok' => true, 'data' => $subscriptions]);
             return $subscriptions;

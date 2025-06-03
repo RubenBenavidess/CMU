@@ -45,4 +45,5 @@ class UserRepository {
         $st->execute(); 
         return $st->insert_id;
     }
+
 }

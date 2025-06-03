@@ -44,12 +44,13 @@ class SubscriptionService {
      * @param int $id ID de la suscripción a eliminar.
      * @return array Resultado con 'ok' y mensaje de éxito o error.
      */
-    public function deactivate(int $userId, int $suscriptionId): array {
-        if (!$this->subscriptionRepository->findBy('idSuscripcion', $suscriptionId)) {
+    public function updateState(int $userId, int $suscriptionId, string $state): array {
+        if (!$this->subscriptionRepository->findBy('idSuscripcion', $suscriptionId))
             return ['ok' => false, 'msg' => 'subscription-not-found'];
-        }
-        $this->subscriptionRepository->deactivate($userId, $suscriptionId);
-        return ['ok' => true, 'msg' => 'subscription-updated'];
+        if($this->subscriptionRepository->updateState($userId, $suscriptionId, $state))
+            return ['ok' => true, 'msg' => 'subscription-updated'];
+        else
+            return ['ok' => false, 'msg' => 'subscription-update-failed'];
     }
 
     /**
@@ -61,4 +62,9 @@ class SubscriptionService {
     public function getBy(array $fields, array $values): ?array {
         return $this->subscriptionRepository->getBy($fields, $values);
     }
+
+    public function getUserSubs(int $idUsuario): array {
+        return $this->subscriptionRepository->getUserSubsWithRole($idUsuario);
+    }
+
 }

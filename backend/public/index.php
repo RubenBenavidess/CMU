@@ -40,16 +40,17 @@ $subjectController = new SubjectController($connection);
         'api/login' => fn() => $authController->login(),
         'api/logout' => fn() => $authController->logout(),
         'api/isLoggedIn' => fn() => $authController->checkLoggedIn(),
+        'api/subjects/getAll' => fn() => $subjectController->getAll(),
         'api/variants/getAll' => fn() => $variantController->getAll(),
         'api/variants/getBySubject' => fn() => $variantController->getBySubject(),
         'api/Subs' => fn() => $subscriptionController->getAll(),
         'api/createSub' => fn() => $subscriptionController->create(),
-        'api/deactivateSub' => fn() => $subscriptionController->deactivate(),
+        'api/updateSubState' => fn() => $subscriptionController->updateState(),
         'api/userSubs' => fn() => $subscriptionController->getUserSubs(),
-        'api/resources/getAll' => fn() => $resourceController->list(),
-        'api/resources/create' => fn() => $resourceController->upload(),
-        'api/resources/delete' => fn() => $resourceController->upload(),
-        'api/subjects/getAll' => fn() => $subjectController->getAll(),
+        'api/resources/create' => fn() => $resourceController->create(),
+        'api/resources/getByUser' => fn() => $resourceController->getByUserId(),
+        'api/resources/delete' => fn() => $resourceController->delete(),
+        'api/resources/download' => fn() => $resourceController->download(),
         default => function() {
             http_response_code(404);
             header('Content-Type: application/json');

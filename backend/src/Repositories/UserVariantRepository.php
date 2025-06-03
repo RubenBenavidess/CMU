@@ -32,5 +32,29 @@ class UserVariantRepository {
         }
         return $st->execute();
     }
+
+        /**
+     * Verificar si un usuario es administrador de una variante.
+     * @param int $userId ID del usuario.
+     * @param int $variantId ID de la variante.
+     * @return bool Verdadero si el usuario es administrador de la variante, falso en caso contrario.
+     */
+    public function isAdminFromVariant(int $userId, int $variantId): bool {
+        $query = "SELECT COUNT(*) as count FROM usuarios_variantes WHERE idUsuario = ? AND idVariante = ? AND rol = 'admin'";
+        $st = $this->db->prepare($query);
+        $st->bind_param('ii', $userId, $variantId);
+        $st->execute();
+        $result = $st->get_result()->fetch_assoc();
+        return (int)$result['count'] > 0;
+    }
+
+    public function isSubFromVariant(int $userId, int $variantId): bool {
+        $query = "SELECT COUNT(*) as count FROM usuarios_variantes WHERE idUsuario = ? AND idVariante = ? AND rol = 'suscriptor'";
+        $st = $this->db->prepare($query);
+        $st->bind_param('ii', $userId, $variantId);
+        $st->execute();
+        $result = $st->get_result()->fetch_assoc();
+        return (int)$result['count'] > 0;
+    }
 }
 

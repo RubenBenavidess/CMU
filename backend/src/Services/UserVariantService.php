@@ -27,4 +27,12 @@ class UserVariantService{
         }
         return ['ok' => true, 'id' => $id];
     }
+
+    public function isAdminFromVariant(int $userId, int $variantId): bool {
+        return $this->userVariantRepository->isAdminFromVariant($userId, $variantId);
+    }
+
+    public function isSubFromVariant(int $userId, int $variantId): bool {
+        return $this->userVariantRepository->isSubFromVariant($userId, $variantId);
+    }
 }

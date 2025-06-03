@@ -16,8 +16,8 @@ class Session {
      * @param string $key Clave de la sesión.
      * @param mixed $value Valor a almacenar.
      */
-    public static function set(string $key, $value): void { 
-        $_SESSION[$key] = $value; 
+    public static function set(string $key, $value): void {
+        $_SESSION[$key] = $value;
     }
 
     /**
@@ -26,15 +26,15 @@ class Session {
      * @param mixed $def Valor por defecto si no existe la clave.
      * @return mixed Valor almacenado o el valor por defecto.
      */
-    public static function get(string $key, $def = null) { 
-        return $_SESSION[$key] ?? $def; 
+    public static function get(string $key, $def = null) {
+        return $_SESSION[$key] ?? $def;
     }
-    
+
     /**
      * Destruir la sesión.
      */
-    public static function clear(): void { 
-        session_unset(); 
-        session_destroy(); 
+    public static function clear(): void {
+        session_unset();
+        session_destroy();
     }
 }

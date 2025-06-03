@@ -7,6 +7,8 @@ use Repositories\EvaluationRepository;
 
 class EvaluationController {
     private EvaluationService $evaluationService;
+    private const JSON_HEADER = 'Content-Type: application/json';
+    private const PHP_INPUT_STREAM = 'php://input';
 
     /**
      * Constructor de EvaluationController.
@@ -22,13 +24,13 @@ class EvaluationController {
      * @return void
      */
     public function create(): void {
-        header('Content-Type: application/json');
+        header(self::JSON_HEADER);
         if (!Session::get('loggedin')) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return;
         }
 
-        $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
+        $body = $_POST ?: json_decode(file_get_contents(self::PHP_INPUT_STREAM), true) ?: [];
         if (!isset($body['idAsignatura'], $body['idUsuario'], $body['titulo'], $body['descripcion']) ||
             empty($body['idAsignatura']) || empty($body['idUsuario']) || empty($body['titulo']) || empty($body['descripcion'])) {
             echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
@@ -52,26 +54,28 @@ class EvaluationController {
      * @return array|null Evaluación encontrada o null si no existe.
      */
     public function get(): ?array {
-        header('Content-Type: application/json');
+        header(self::JSON_HEADER);
+        $result = null;
         if (!Session::get('loggedin')) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return null;
-        }
-
-        $parms = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        if (!isset($parms['idEvaluacion']) || empty($parms['idEvaluacion'])) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-id']);
-            return null;
-        }
-
-        $evaluation = $this->evaluationService->get((int)$parms['idEvaluacion']);
-        if ($evaluation) {
-            echo json_encode(['ok' => true, 'data' => $evaluation]);
-            return $evaluation;
+        echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
         } else {
-            echo json_encode(['ok' => false, 'msg' => 'evaluation-not-found']);
-            return null;
+            $parms = $_GET ?: json_decode(file_get_contents(self::PHP_INPUT_STREAM), true) ?: [];
+
+            if (!isset($parms['idEvaluacion']) || empty($parms['idEvaluacion'])) {
+                echo json_encode(['ok' => false, 'msg' => 'missing-id']);
+            } else {
+                $evaluation = $this->evaluationService->get((int)$parms['idEvaluacion']);
+
+                if ($evaluation) {
+                    echo json_encode(['ok' => true, 'data' => $evaluation]);
+                    $result = $evaluation;
+                } else {
+                    echo json_encode(['ok' => false, 'msg' => 'evaluation-not-found']);
+                }
+            }
         }
+
+        return $result;
     }
 
     /**
@@ -79,13 +83,13 @@ class EvaluationController {
      * @return void
      */
     public function submit(): void {
-        header('Content-Type: application/json');
+        header(self::JSON_HEADER);
         if (!Session::get('loggedin')) {
             echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
             return;
         }
 
-        $body = $_POST ?: json_decode(file_get_contents('php://input'), true) ?: [];
+        $body = $_POST ?: json_decode(file_get_contents(self::PHP_INPUT_STREAM), true) ?: [];
         if (!isset($body['idEvaluacion'], $body['puntuacion']) || empty($body['idEvaluacion']) || !is_numeric($body['puntuacion'])) {
             echo json_encode(['ok' => false, 'msg' => 'missing-fields-or-invalid-score']);
             return;

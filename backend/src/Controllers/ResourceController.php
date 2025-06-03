@@ -10,6 +10,29 @@ use Repositories\UserVariantRepository;
 class ResourceController {
     private ResourceService     $resourceService;
     private UserVariantService  $userVariantService;
+    private const JSON_CONTENT_TYPE = 'Content-Type: application/json';
+    private function jsonResponse(array $data): void
+    {
+        echo json_encode($data);
+    }
+
+    private function deletePhysicalFile(string $relativePath): void
+    {
+        $absPath = __DIR__ . '/../../public/' . $relativePath;
+        if (is_file($absPath)) {
+            unlink($absPath);
+        }
+    }
+    private function validateBody(array $body): bool
+    {
+        $required = ['tipo', 'titulo', 'descripcion'];
+        foreach ($required as $field) {
+            if (empty($body[$field])) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public function __construct(\mysqli $db)
     {
@@ -22,91 +45,62 @@ class ResourceController {
      * Crea un recurso y sube el archivo a /public/uploads.
      */
     public function create(): void
-    {
-        header('Content-Type: application/json');
+{
+    header(self::JSON_CONTENT_TYPE);
 
-        /* ---------- Autenticación ---------- */
-        $userId = Session::get('idUsuario');
-        if (!$userId) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return;
-        }
-
-        /* ---------- Parámetros GET ---------- */
-        $params     = $_GET ?? [];
-        $idVariante = $params['idVariante'] ?? null;
-
-        if (!$idVariante) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
-            return;
-        }
-
-        /* ---------- Autorización (admin de la variante) ---------- */
-        if (!$this->userVariantService->isAdminFromVariant($userId, (int)$idVariante)) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authorized']);
-            return;
-        }
-
-        /* ---------- Cuerpo (multipart/form-data) ---------- */
-        $body = $_POST ?? [];
-        $required = ['tipo', 'titulo', 'descripcion'];
-
-        foreach ($required as $f) {
-            if (empty($body[$f])) {
-                echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
-                return;
-            }
-        }
-
-        /* ---------- Validación de archivo ---------- */
-        if (!isset($_FILES['file'])) {
-            echo json_encode(['ok' => false, 'msg' => 'file-required']);
-            return;
-        }
-        $file = $_FILES['file'];
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-            echo json_encode(['ok' => false, 'msg' => 'file-upload-error']);
-            return;
-        }
-
-        /* ---------- Generar nombre y ruta segura ---------- */
-        $ext       = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $fileName  = uniqid('r_', true) . ($ext ? '.' . $ext : '');
-        $relPath   = "uploads/{$fileName}";                    // se guarda en BD
-        $uploadDir = __DIR__ . '/../../public/uploads';        // carpeta física
-
-        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
-            echo json_encode(['ok' => false, 'msg' => 'server-storage-failed']);
-            return;
-        }
-
-        /* ---------- Inserción en BD ---------- */
-        $newResource = [
-            'idVariante'  => (int)$idVariante,
-            'tipo'        => $body['tipo'],
-            'titulo'      => $body['titulo'],
-            'descripcion' => $body['descripcion'],
-            'file_path'   => $relPath,
-            'creado_por'  => $userId
-        ];
-
-        $result = $this->resourceService->create($newResource);
-        if (!$result['ok']) {
-            echo json_encode(['ok' => false, 'msg' => $result['msg']]);
-            return;
-        }
-
-        /* ---------- Mover archivo solo si el INSERT fue correcto ---------- */
-        $dest = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
-        if (!move_uploaded_file($file['tmp_name'], $dest)) {
-            // rollback simple
-            $this->resourceService->delete($userId, (int)$result['id']);
-            echo json_encode(['ok' => false, 'msg' => 'file-save-failed']);
-            return;
-        }
-
-        echo json_encode(['ok' => true, 'id' => $result['id']]);
+    $userId = Session::get('idUsuario');
+    if (!$userId) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'not-authenticated']);
     }
+
+    $idVariante = $_GET['idVariante'] ?? null;
+    if (!$idVariante || !$this->userVariantService->isAdminFromVariant($userId, (int)$idVariante)) {
+        return $this->jsonResponse(['ok' => false, 'msg' => $idVariante ? 'not-authorized' : 'missing-fields']);
+    }
+
+    $body = $_POST ?? [];
+    if (!$this->validateBody($body)) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'missing-fields']);
+    }
+
+    if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'file-' . (!isset($_FILES['file']) ? 'required' : 'upload-error')]);
+    }
+
+    $file = $_FILES['file'];
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $fileName = uniqid('r_', true) . ($ext ? '.' . $ext : '');
+    $relPath = "uploads/{$fileName}";
+    $uploadDir = __DIR__ . '/../../public/uploads';
+
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'server-storage-failed']);
+    }
+
+    $newResource = [
+        'idVariante'  => (int)$idVariante,
+        'tipo'        => $body['tipo'],
+        'titulo'      => $body['titulo'],
+        'descripcion' => $body['descripcion'],
+        'file_path'   => $relPath,
+        'creado_por'  => $userId
+    ];
+
+    $result = $this->resourceService->create($newResource);
+    if (!$result['ok']) {
+        return $this->jsonResponse(['ok' => false, 'msg' => $result['msg']]);
+    }
+
+    $dest = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
+    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+        $this->resourceService->delete($userId, (int)$result['id']);
+        return $this->jsonResponse(['ok' => false, 'msg' => 'file-save-failed']);
+    }
+
+    $this->jsonResponse(['ok' => true, 'id' => $result['id']]);
+}
+
+
 
     /**
      * GET /recursos?userId=#
@@ -141,62 +135,41 @@ class ResourceController {
      * DELETE /recursos?idRecurso=#
      */
     public function delete(): void
-    {
-        header('Content-Type: application/json');
+{
+    header(self::JSON_CONTENT_TYPE);
 
-        $userId = Session::get('idUsuario');
-        if (!$userId) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
-            return;
-        }
-
-        $params    = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
-        $idRecurso = $params['idRecurso'] ?? null;
-        if (!$idRecurso) {
-            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
-            return;
-        }
-
-        /* ── Recuperamos el recurso para verificar propiedad y variante ── */
-        $resource = $this->resourceService
-                        ->getBy(['idRecurso'], [(int)$idRecurso]);
-
-        if (!$resource) {
-            echo json_encode(['ok' => false, 'msg' => 'resource-not-found']);
-            return;
-        }
-
-        $resource      = $resource[0];
-        $resourceOwner = (int)$resource['creado_por'];
-        $variantId     = (int)$resource['idVariante'];
-
-        /* ── Nueva verificación: ¿es admin de la variante? ── */
-        if (!$this->userVariantService->isAdminFromVariant($userId, $variantId)) {
-            echo json_encode(['ok' => false, 'msg' => 'not-authorized']);
-            return;
-        }
-
-        /* ── (Opcional) ¿quieres además exigir que sea el creador? ── */
-        // if ($userId !== $resourceOwner) {
-        //     echo json_encode(['ok' => false, 'msg' => 'not-authorized']);
-        //     return;
-        // }
-
-        /* ── Eliminamos ── */
-        $deleteRes = $this->resourceService->delete($userId, $idRecurso);
-        if (!$deleteRes['ok']) {
-            echo json_encode($deleteRes);
-            return;
-        }
-
-        /* ── Borrado físico del archivo si aún existe ── */
-        $absPath = __DIR__ . '/../../public/' . $resource['file_path'];
-        if (is_file($absPath)) {
-            unlink($absPath);
-        }
-
-        echo json_encode(['ok' => true, 'msg' => 'resource-deleted']);
+    $userId = Session::get('idUsuario');
+    if (!$userId) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'not-authenticated']);
     }
+
+    $params = $_GET ?: json_decode(file_get_contents('php://input'), true) ?: [];
+    $idRecurso = $params['idRecurso'] ?? null;
+
+    if (!$idRecurso) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'missing-fields']);
+    }
+
+    $resource = $this->resourceService->getBy(['idRecurso'], [(int)$idRecurso])[0] ?? null;
+    if (!$resource) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'resource-not-found']);
+    }a
+
+    $variantId = (int)$resource['idVariante'];
+    if (!$this->userVariantService->isAdminFromVariant($userId, $variantId)) {
+        return $this->jsonResponse(['ok' => false, 'msg' => 'not-authorized']);
+    }
+
+    $deleteRes = $this->resourceService->delete($userId, (int)$idRecurso);
+    if (!$deleteRes['ok']) {
+        return $this->jsonResponse($deleteRes);
+    }
+
+    $this->deletePhysicalFile($resource['file_path']);
+    $this->jsonResponse(['ok' => true, 'msg' => 'resource-deleted']);
+}
+
+
 
     /**
      * GET /recursos/download?idRecurso=#

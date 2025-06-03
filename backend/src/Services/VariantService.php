@@ -8,7 +8,7 @@ class VariantService {
     /**
      * Constructor de VariantService.
      * @param VariantRepository $variantRepository
-     * @return void 
+     * @return void
      */
     public function __construct(VariantRepository $variantRepository) {
         $this->variantRepository = $variantRepository;

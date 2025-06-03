@@ -1,7 +1,7 @@
 <?php
-require __DIR__.'/../vendor/autoload.php';
-require __DIR__.'/../config/database.php';
-
+// @codeCoverageIgnoreStart
+require_once __DIR__.'/../vendor/autoload.php';
+// @codeCoverageIgnoreEnd
 use Helpers\Session;
 use Controllers\AuthController;
 use Controllers\VariantController;

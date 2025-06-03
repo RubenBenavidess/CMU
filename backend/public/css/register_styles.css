@@ -84,7 +84,7 @@
 
 /* Iconos para cada tipo de campo */
 .wrap-input-8::before {
-    font-family: 'Material Icons';
+    font-family: 'Material Icons', sans-serif;
     position: absolute;
     left: 15px;
     top: 50%;

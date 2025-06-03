@@ -1,6 +1,6 @@
 <?php
-
 namespace Services;
+
 use Repositories\SubjectRepository;
 
 class SubjectService {
@@ -9,7 +9,6 @@ class SubjectService {
     /**
      * Constructor de SubjectService.
      * @param SubjectRepository $subjectRepository
-     * @return void 
      */
     public function __construct(SubjectRepository $subjectRepository) {
         $this->subjectRepository = $subjectRepository;

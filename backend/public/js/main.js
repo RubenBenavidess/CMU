@@ -60,7 +60,7 @@ async function init() {
     //    • susInactivas: rol==='suscriptor'  && estado==='inactiva'
     //    • susAdmins:    rol==='admin'
     const susActivas   = subsRaw.filter(s => s.rol === 'suscriptor' && s.estado === 'activa');
-    const susInactivas = subsRaw.filter(s => s.rol === 'suscriptor' && s.estado === 'inactiva');
+    
     const susAdmins    = subsRaw.filter(s => s.rol === 'admin');
 
     // 7) Renderizamos “Mis suscripciones” → SOLO susActivas

@@ -43,13 +43,9 @@ class ResourceService {
         }
     }
 
-<<<<<<< HEAD
-}
-=======
     public function getByVariant(int $idVariante): ?array {
         return $this->resourceRepository->getByVariant($idVariante);
     }
 
 
 }
->>>>>>> refs/remotes/origin/main

@@ -117,9 +117,6 @@ class ResourceRepository {
         $st->execute();
         return $st->affected_rows;
     }
-<<<<<<< HEAD
-}
-=======
 
     public function getByVariant(int $idVariante): ?array {
         $query = "SELECT r.idRecurso, r.tipo, r.titulo, r.descripcion, r.file_path, r.creado_por, r.created_at,
@@ -135,4 +132,3 @@ class ResourceRepository {
 
 
 }
->>>>>>> refs/remotes/origin/main

@@ -6,9 +6,9 @@ describe('POST /api/register', () => {
     const generateUserData = () => {
         const timestamp = Date.now();
         return {
-            username: `testuser_${timestamp}`,
+            username: testuser_${timestamp},
             password: '123456',
-            email: `correo${timestamp}@ejemplo.com`,
+            email: correo${timestamp}@ejemplo.com,
             bornDate: '2001-05-15'
         };
     };
@@ -16,7 +16,7 @@ describe('POST /api/register', () => {
     test('Debería registrar un nuevo usuario correctamente', async () => {
         const userData = generateUserData();
 
-        const res = await fetch(`${baseUrl}/api/register`, {
+        const res = await fetch(${baseUrl}/api/register, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
@@ -37,7 +37,7 @@ describe('POST /api/register', () => {
     });
 
     test('Debería fallar si faltan campos', async () => {
-        const res = await fetch(`${baseUrl}/api/register`, {
+        const res = await fetch(${baseUrl}/api/register, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -63,7 +63,7 @@ describe('POST /api/register', () => {
 
         // Primer registro exitoso (si el endpoint existe)
         try {
-            await fetch(`${baseUrl}/api/register`, {
+            await fetch(${baseUrl}/api/register, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
@@ -73,12 +73,12 @@ describe('POST /api/register', () => {
         }
 
         // Segundo intento con mismo username
-        const res = await fetch(`${baseUrl}/api/register`, {
+        const res = await fetch(${baseUrl}/api/register, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 ...userData,
-                email: `nuevo${Date.now()}@ejemplo.com`
+                email: nuevo${Date.now()}@ejemplo.com
             })
         });
 
@@ -96,7 +96,7 @@ describe('POST /api/register', () => {
 
         // Primer registro exitoso (si el endpoint existe)
         try {
-            await fetch(`${baseUrl}/api/register`, {
+            await fetch(${baseUrl}/api/register, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
@@ -106,12 +106,12 @@ describe('POST /api/register', () => {
         }
 
         // Segundo intento con mismo email
-        const res = await fetch(`${baseUrl}/api/register`, {
+        const res = await fetch(${baseUrl}/api/register, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 ...userData,
-                username: `nuevo_usuario_${Date.now()}`
+                username: nuevo_usuario_${Date.now()}
             })
         });
 

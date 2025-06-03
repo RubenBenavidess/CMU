@@ -122,7 +122,7 @@ class SubscriptionRepository {
      */
     public function getUserSubsWithRole(int $idUsuario): array {
         $sql = "
-            SELECT 
+            SELECT
                 s.idSuscripcion,
                 s.idUsuario,
                 s.idVariante,
@@ -140,8 +140,4 @@ class SubscriptionRepository {
         $st->execute();
         return $st->get_result()->fetch_all(MYSQLI_ASSOC) ?: [];
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main
 }

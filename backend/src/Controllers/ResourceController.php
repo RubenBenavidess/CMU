@@ -230,5 +230,27 @@ class ResourceController {
         exit;
     }
 
+    public function getByVariant(): void {
+        header('Content-Type: application/json');
+        $userId = Session::get('idUsuario');
+        if (!$userId) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authenticated']);
+            return;
+        }
+        $idVariante = isset($_GET['idVariante']) ? (int)$_GET['idVariante'] : null;
+        if (!$idVariante) {
+            echo json_encode(['ok' => false, 'msg' => 'missing-fields']);
+            return;
+        }
+        // Solo si es suscriptor o admin de esa variante
+        if (!$this->userVariantService->isSubFromVariant($userId, $idVariante)
+            && !$this->userVariantService->isAdminFromVariant($userId, $idVariante)) {
+            echo json_encode(['ok' => false, 'msg' => 'not-authorized']);
+            return;
+        }
+        $recursos = $this->resourceService->getByVariant($idVariante) ?: [];
+        echo json_encode(['ok' => true, 'resources' => $recursos]);
+    }
+
 
 }

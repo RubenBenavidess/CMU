@@ -51,6 +51,7 @@ $subjectController = new SubjectController($connection);
         'api/resources/getByUser' => fn() => $resourceController->getByUserId(),
         'api/resources/delete' => fn() => $resourceController->delete(),
         'api/resources/download' => fn() => $resourceController->download(),
+        'api/resources/getByVariant' => fn() => $resourceController->getByVariant(),
         default => function() {
             http_response_code(404);
             header('Content-Type: application/json');

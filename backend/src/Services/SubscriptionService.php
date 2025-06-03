@@ -14,20 +14,21 @@ class SubscriptionService {
     }
 
     /**
-     * Obtener todas las suscripciones.
-     * @return array|null Lista de suscripciones o null si no hay resultados.
-     */
-    public function getAll(): ?array {
-        return $this->subscriptionRepository->getAll();
-    }
-
-    /**
      * Crear una nueva suscripción.
      * @param array $data Datos de la suscripción a crear.
      * @return array Resultado con 'ok' y 'id' de la suscripción creada o mensaje de error.
      */
     public function create(array $data): array {
+<<<<<<< HEAD
         if ($this->getBy(['idUsuario', 'idVariante'], [$data['idUsuario'], $data['idVariante']])) {
+=======
+        // Si ya existe (sea activa o inactiva), devolvemos error
+        $existing = $this->subscriptionRepository->getBy(
+            ['idUsuario', 'idVariante'],
+            [$data['idUsuario'], $data['idVariante']]
+        );
+        if ($existing) {
+>>>>>>> refs/remotes/origin/main
             return ['ok' => false, 'msg' => 'subscription-already-exists'];
         }
         $id = $this->subscriptionRepository->create($data);
@@ -38,6 +39,7 @@ class SubscriptionService {
     }
 
     /**
+<<<<<<< HEAD
      * Actualizar el estado de una suscripción.
      * @param int $userId ID del usuario.
      * @param int $suscriptionId ID de la suscripción.
@@ -49,10 +51,37 @@ class SubscriptionService {
             return ['ok' => false, 'msg' => 'subscription-not-found'];
         }
         if ($this->subscriptionRepository->updateState($userId, $suscriptionId, $state)) {
+=======
+     * Actualizar estado de una suscripción.
+     * @param int $userId         ID del usuario propietario.
+     * @param int $suscriptionId  ID de la suscripción.
+     * @param string $state       'activa' o 'inactiva'
+     * @return array Resultado con 'ok' y mensaje.
+     */
+    public function updateState(int $userId, int $suscriptionId, string $state): array {
+        // Verificar que exista esa suscripción
+        if (!$this->subscriptionRepository->findBy('idSuscripcion', (string)$suscriptionId)) {
+            return ['ok' => false, 'msg' => 'subscription-not-found'];
+        }
+        $aff = $this->subscriptionRepository->updateState($userId, $suscriptionId, $state);
+        if ($aff) {
+>>>>>>> refs/remotes/origin/main
             return ['ok' => true, 'msg' => 'subscription-updated'];
         } else {
             return ['ok' => false, 'msg' => 'subscription-update-failed'];
         }
+<<<<<<< HEAD
+=======
+    }
+
+    /**
+     * Obtener suscripciones activas (con rol) de un usuario.
+     * @param int $idUsuario
+     * @return array Lista de suscripciones activas con campo 'rol'.
+     */
+    public function getUserSubs(int $idUsuario): array {
+        return $this->subscriptionRepository->getUserSubsWithRole($idUsuario);
+>>>>>>> refs/remotes/origin/main
     }
 
     /**
@@ -66,11 +95,19 @@ class SubscriptionService {
     }
 
     /**
+<<<<<<< HEAD
      * Obtener suscripciones de un usuario con su rol.
      * @param int $idUsuario
      * @return array Lista de suscripciones del usuario.
      */
     public function getUserSubs(int $idUsuario): array {
         return $this->subscriptionRepository->getUserSubsWithRole($idUsuario);
+=======
+     * Obtener todas las suscripciones (sin filtro).
+     * @return array|null
+     */
+    public function getAll(): ?array {
+        return $this->subscriptionRepository->getAll();
+>>>>>>> refs/remotes/origin/main
     }
 }

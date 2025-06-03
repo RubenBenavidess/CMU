@@ -2,6 +2,8 @@
 // api.js  (ES module)
 // Utilidad central para todas las peticiones fetch → backend PHP
 // ================================
+import fetch from 'node-fetch';
+
 
 const API_ORIGIN = window.location.origin;            //  http://localhost:8000  (mismo host)
 const JSON_HEADER = { 'Content-Type': 'application/json' };

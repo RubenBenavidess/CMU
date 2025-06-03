@@ -3,6 +3,8 @@
 // Solo lo usaremos para alternar paneles dentro de main.html sin recargar.
 // ================================
 
+
+
 export class Router {
   constructor() {
     this.routes = {};
